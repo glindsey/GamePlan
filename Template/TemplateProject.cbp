@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TemplateProject" />
+		<Option execution_dir="C:/Users/Gregory Lindsey/Dropbox/Projects/GamePlan/Template/TemplateProject/" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/TemplateProject" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics-s-d" />
+					<Add library="sfml-window-s-d" />
+					<Add library="sfml-system-s-d" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/TemplateProject" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="sfml-graphics-s" />
+					<Add library="sfml-window-s" />
+					<Add library="sfml-system-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-march=core2" />
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add option="-Wno-unused-local-typedefs" />
+			<Add option="-DSFML_STATIC" />
+			<Add directory="code" />
+			<Add directory="../common" />
+			<Add directory="../../../libraries/boost_1_55_0" />
+			<Add directory="../../../libraries/SFML-2.1/include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="user32" />
+			<Add library="gdi32" />
+			<Add library="winmm" />
+			<Add library="dxguid" />
+			<Add directory="../../../libraries/SFML-2.1/build/lib" />
+			<Add directory="../../../libraries/boost_1_55_0/boost/stage/lib" />
+		</Linker>
+		<Unit filename="../common/App.cpp" />
+		<Unit filename="../common/App.h" />
+		<Unit filename="../common/ConfigSettings.cpp" />
+		<Unit filename="../common/ConfigSettings.h" />
+		<Unit filename="../common/Direction.h" />
+		<Unit filename="../common/ErrorMacros.cpp" />
+		<Unit filename="../common/ErrorMacros.h" />
+		<Unit filename="../common/EventHandler.h" />
+		<Unit filename="../common/GeoVector.h" />
+		<Unit filename="../common/GetLetterKey.h" />
+		<Unit filename="../common/Renderable.h" />
+		<Unit filename="../common/State.cpp" />
+		<Unit filename="../common/State.h" />
+		<Unit filename="../common/StateMachine.cpp" />
+		<Unit filename="../common/StateMachine.h" />
+		<Unit filename="../common/TextureAtlas.cpp" />
+		<Unit filename="../common/TextureAtlas.h" />
+		<Unit filename="../common/TileSheet.cpp" />
+		<Unit filename="../common/TileSheet.h" />
+		<Unit filename="../common/common_enums.h" />
+		<Unit filename="../common/gui/GUIButton.cpp" />
+		<Unit filename="../common/gui/GUIButton.h" />
+		<Unit filename="../common/gui/GUIControl.cpp" />
+		<Unit filename="../common/gui/GUIControl.h" />
+		<Unit filename="../common/gui/GUIEnums.h" />
+		<Unit filename="../common/gui/GUIFont.cpp" />
+		<Unit filename="../common/gui/GUIFont.h" />
+		<Unit filename="../common/gui/GUIImage.h" />
+		<Unit filename="../common/gui/GUILabel.cpp" />
+		<Unit filename="../common/gui/GUILabel.h" />
+		<Unit filename="../common/gui/GUIPane.cpp" />
+		<Unit filename="../common/gui/GUIPane.h" />
+		<Unit filename="../common/gui/GUIRoot.cpp" />
+		<Unit filename="../common/gui/GUIRoot.h" />
+		<Unit filename="../common/gui/GUISlider.h" />
+		<Unit filename="code/AppStateGameMode.cpp" />
+		<Unit filename="code/AppStateGameMode.h" />
+		<Unit filename="code/AppStateMainMenu.cpp" />
+		<Unit filename="code/AppStateMainMenu.h" />
+		<Unit filename="code/AppStateSplashScreen.cpp" />
+		<Unit filename="code/AppStateSplashScreen.h" />
+		<Unit filename="code/AppTemplate.cpp" />
+		<Unit filename="code/AppTemplate.h" />
+		<Unit filename="code/main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
