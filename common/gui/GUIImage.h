@@ -8,22 +8,24 @@
 #include "GUIControl.h"
 #include "GUIEnums.h"
 
-// Forward declarations
-class GUIFont;
+namespace GUI {
 
-class GUIImage :
-  public GUIControl
+// Forward declarations
+class Font;
+
+class Image :
+  public Control
 {
   public:
-    GUIImage(std::string name,
-             sf::FloatRect dimensions);
-    virtual ~GUIImage();
+    Image(std::string name,
+          sf::FloatRect dimensions);
+    virtual ~Image();
 
     void set_image(sf::Image image);
     sf::Image get_image(void) const;
 
-    void set_scaling_type(GUIScalingType scaling_type);
-    GUIScalingType get_scaling_type() const;
+    void set_scaling_type(ScalingType scaling_type);
+    ScalingType get_scaling_type() const;
 
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;
@@ -36,5 +38,7 @@ class GUIImage :
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
+
+} // end namespace GUI
 
 #endif // GUIIMAGE_H

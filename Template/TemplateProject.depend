@@ -4585,7 +4585,7 @@
 	<vector>
 	"GUIControl.h"
 
-1397609546 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\app.cpp
+1398998175 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\app.cpp
 	"App.h"
 	<boost/random/uniform_int_distribution.hpp>
 	<ctime>
@@ -4599,7 +4599,7 @@
 	"StateMachine.h"
 	"TextureAtlas.h"
 
-1397097405 c:\gdrive\hobby\gamedev\projects\gameplan\common\app.h
+1398998152 c:\gdrive\hobby\gamedev\projects\gameplan\common\app.h
 	<boost/noncopyable.hpp>
 	<boost/random/mersenne_twister.hpp>
 	<memory>
@@ -6142,7 +6142,7 @@
 	<boost/random/detail/disable_warnings.hpp>
 	<boost/random/detail/enable_warnings.hpp>
 
-1396716887 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guifont.h
+1398997418 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guifont.h
 	<SFML/Graphics.hpp>
 	<memory>
 
@@ -7752,66 +7752,66 @@
 	<boost/format.hpp>
 	<cstdlib>
 
-1397614389 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.cpp
+1398997655 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.cpp
 	"gui/GUIButton.h"
 	"App.h"
 	"ConfigSettings.h"
 	"GUIFont.h"
 
-1397610134 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.h
+1398998187 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.h
 	<SFML/Graphics.hpp>
 	<functional>
 	<memory>
 	<vector>
 	"GUIControl.h"
 
-1397612892 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
+1398997356 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
 	<SFML/Graphics.hpp>
 	<memory>
 	"EventHandler.h"
 	"Renderable.h"
 
-1397614430 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
+1398997751 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
 	"GUIControl.h"
 	"ErrorMacros.h"
 	"GUIEnums.h"
 	"boost/format.hpp"
 
-1397528263 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guienums.h
+1398997389 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guienums.h
 
-1396716903 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guifont.cpp
+1398997829 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guifont.cpp
 	"GUIFont.h"
 	<SFML/Graphics.hpp>
 	<memory>
 
-1397611147 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.cpp
+1398998197 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.cpp
 	"gui/GUILabel.h"
 	"App.h"
 	"ConfigSettings.h"
 	"GUIFont.h"
 
-1397611107 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.h
+1398997490 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.h
 	<SFML/Graphics.hpp>
 	<memory>
 	<vector>
 	"GUIControl.h"
 
-1397614643 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.cpp
+1398997952 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.cpp
 	"gui/GUIPane.h"
 	"App.h"
 	"ConfigSettings.h"
 	"GUIFont.h"
 
-1397611179 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.h
+1398997524 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.h
 	<SFML/Graphics.hpp>
 	<memory>
 	<vector>
 	"GUIControl.h"
 
-1397611513 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.cpp
+1398997991 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.cpp
 	"GUIRoot.h"
 
-1397611485 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.h
+1398997546 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.h
 	"GUIControl.h"
 
 1396719513 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\state.cpp
@@ -9061,10 +9061,11 @@
 	"AppStateGameMode.h"
 	"App.h"
 
-1397611650 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
+1398998209 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
 	"AppStateMainMenu.h"
 	"App.h"
 	"gui/GUIButton.h"
+	"gui/GUIEnums.h"
 	"gui/GUIFont.h"
 	"gui/GUIPane.h"
 

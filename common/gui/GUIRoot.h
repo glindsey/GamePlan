@@ -3,18 +3,21 @@
 
 #include "GUIControl.h"
 
+namespace GUI {
 
-class GUIRoot : public GUIControl
+class Root : public Control
 {
   public:
-    GUIRoot(std::string name,
-            sf::Vector2f dimensions);
-    virtual ~GUIRoot();
+    Root(std::string name,
+         sf::Vector2f dimensions);
+    virtual ~Root();
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;
 
     virtual void _render(sf::RenderTarget& target, int frame) override final;
   private:
 };
+
+} // end namespace GUI
 
 #endif // GUIROOT_H

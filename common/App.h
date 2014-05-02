@@ -9,7 +9,10 @@
 #include "EventHandler.h"
 
 // Forward declarations
-class GUIFont;
+namespace GUI
+{
+  class Font;
+}
 class MessageLog;
 class StateMachine;
 class TileSheet;
@@ -28,7 +31,7 @@ class App : public EventHandler, public boost::noncopyable
 
     int get_rand(int minimum, int maximum);
 
-    std::shared_ptr<GUIFont> get_default_font();
+    std::shared_ptr<GUI::Font> get_default_font();
 
   protected:
     StateMachine& get_state_machine();

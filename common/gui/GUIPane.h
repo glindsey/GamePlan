@@ -7,17 +7,19 @@
 
 #include "GUIControl.h"
 
-// Forward declarations
-class GUIFont;
+namespace GUI {
 
-class GUIPane :
-  public GUIControl
+// Forward declarations
+class Font;
+
+class Pane :
+  public Control
 {
   public:
-    GUIPane(std::string name,
-            sf::Vector2f dimensions,
-            std::shared_ptr<GUIFont> title_font);
-    virtual ~GUIPane();
+    Pane(std::string name,
+         sf::Vector2f dimensions,
+         std::shared_ptr<Font> title_font);
+    virtual ~Pane();
 
     void set_title(sf::String str);
     sf::String get_title(void) const;
@@ -32,5 +34,7 @@ class GUIPane :
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
+
+} // end namespace GUI
 
 #endif // GUIPANE_H

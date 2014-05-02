@@ -7,17 +7,19 @@
 #include "EventHandler.h"
 #include "Renderable.h"
 
-// Forward declarations
-class GUIAlign;
+namespace GUI {
 
-class GUIControl :
+// Forward declarations
+class Align;
+
+class Control :
   public EventHandler,
   public Renderable
 {
   public:
-    GUIControl(std::string name,
+    Control(std::string name,
                sf::Vector2f dimensions);
-    virtual ~GUIControl();
+    virtual ~Control();
 
     std::string get_name() const;
 
@@ -30,25 +32,36 @@ class GUIControl :
     sf::Vector2f get_dimensions() const;
     void set_dimensions(sf::Vector2f dimensions);
 
-    GUIAlign get_alignment() const;
-    void set_alignment(GUIAlign alignment);
+    Align get_alignment() const;
+    void set_alignment(Align alignment);
 
-    bool is_mouse_inside();
+    bool is_visible() const;
+    void set_visible(bool visible);
 
-    bool add_child(std::shared_ptr<GUIControl> new_child);
-    void must_add_child(std::shared_ptr<GUIControl> new_child);
+    bool is_mouse_inside() const;
 
-    bool remove_child(std::shared_ptr<GUIControl> new_child);
-    void must_remove_child(std::shared_ptr<GUIControl> new_child);
+    bool add_child(std::shared_ptr<Control> new_child);
+    void must_add_child(std::shared_ptr<Control> new_child);
 
-    std::shared_ptr<GUIControl> get_child(std::string const& name) const;
-    std::shared_ptr<GUIControl> must_get_child(std::string const& name) const;
+    bool remove_child(std::shared_ptr<Control> new_child);
+    void must_remove_child(std::shared_ptr<Control> new_child);
+
+    std::shared_ptr<Control> get_child(std::string const& name) const;
+    std::shared_ptr<Control> must_get_child(std::string const& name) const;
 
     virtual void render(sf::RenderTarget& target, int frame) override final;
 
     virtual EventResult handle_event(sf::Event& event) override final;
 
   protected:
+    /// Set instantaneous visibility.
+    /// @param visibility False to hide the control, True to show it.
+    void set_instant_visibility(bool visible);
+
+    /// Given parent size, and child size, position and alignment, return
+    /// adjusted absolute coordinates.
+    sf::Vector2f get_anchored_position(sf::Vector2f child_size) const;
+
     /// Template method for rendering the control. Pure virtual in GUIControl.
     /// @param target Target to render to.
     /// @param frame Animation frame to render.
@@ -61,8 +74,13 @@ class GUIControl :
     virtual EventResult _handle_event(sf::Event& event) = 0;
 
   private:
+    /// Set parent of control.
+    void set_parent(Control* parent);
+
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
+
+} // end namespace GUI
 
 #endif // GUICONTROL_H

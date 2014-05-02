@@ -1,38 +1,50 @@
 #ifndef GUIENUMS_H
 #define GUIENUMS_H
 
+namespace GUI {
+
 /// Horizontal control alignment.
-enum class GUIHorizAlign
+enum class HorizAlign
 {
   Left,     ///< Align the left edge of the control with that of the parent.
   Center,   ///< Align the X center of the control with that of the parent.
   Right     ///< Align the right edge of the control with that of the parent.
 };
 
-enum class GUIVertAlign
+enum class VertAlign
 {
   Top,      ///< Align the top edge of the control with that of the parent.
   Center,   ///< Align the Y center of the control with that of the parent.
   Bottom    ///< Align the bottom edge of the control with that of the parent.
 };
 
-enum class GUIScalingType
+enum class ScalingType
 {
   None,     ///< Target is not scaled at all.
   Stretch,  ///< Target is scaled to fit the container.
   Aspect    ///< Target is scaled to fit while maintaining proper aspect ratio.
 };
 
-enum class GUIOrientation
+enum class Orientation
 {
   Horizontal,   ///< Target is oriented on the horizontal (X) axis.
   Vertical      ///< Target is oriented on the vertical (Y) axis.
 };
 
-struct GUIAlign
+enum class VisibilityState
 {
-  GUIHorizAlign horiz;
-  GUIVertAlign vert;
+  Hidden = 0,
+  Appearing = 1,
+  Visible = 2,
+  Disappearing = 3
 };
+
+struct Align
+{
+  HorizAlign horiz;
+  VertAlign vert;
+};
+
+} // end namespace GUI
 
 #endif // GUIENUMS_H

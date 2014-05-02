@@ -5,8 +5,17 @@
 
 #include "boost/format.hpp"
 
-struct GUIControl::Impl
+namespace GUI {
+
+struct Control::Impl
 {
+  /// Raw pointer to parent control.
+  /// If control does not have a parent, pointer is null.
+  Control* parent;
+
+  /// Control name.
+  std::string name;
+
   /// Control dimensions.
   sf::Vector2f dimensions;
 
@@ -14,10 +23,16 @@ struct GUIControl::Impl
   sf::Vector2f position;
 
   /// Control alignment (to parent).
-  GUIAlign alignment;
+  Align alignment;
 
-  /// Control name.
-  std::string name;
+  /// Visibility amount, from 0 to 1.
+  float appear_amount;
+
+  /// How fast this control appears: 0 = never (don't do this!), 1 = instantaneous.
+  float appear_speed;
+
+  /// Current visibility state of this control and its children.
+  VisibilityState appear_state;
 
   /// Boolean indicating whether this area has the focus.
   bool focus;
@@ -29,77 +44,106 @@ struct GUIControl::Impl
   std::unique_ptr<sf::RenderTexture> control_texture;
 
   /// Collection of child controls.
-  std::vector<std::shared_ptr<GUIControl>> children;
+  std::vector<std::shared_ptr<Control>> children;
 };
 
-GUIControl::GUIControl(std::string name,
-                       sf::Vector2f dimensions)
+Control::Control(std::string name,
+                 sf::Vector2f dimensions)
   : impl(new Impl())
 {
+  impl->parent = nullptr;
   impl->name = name;
   set_dimensions(dimensions);
   set_position({0, 0});
-  set_alignment({GUIHorizAlign::Left, GUIVertAlign::Center});
+  set_alignment({HorizAlign::Left, VertAlign::Top});
+  impl->appear_state = VisibilityState::Visible;
+  impl->appear_amount = 1.0f;
+  impl->appear_speed = 0.05f;
 }
 
-GUIControl::~GUIControl()
+Control::~Control()
 {
   //dtor
 }
 
-std::string GUIControl::get_name() const
+std::string Control::get_name() const
 {
   return impl->name;
 }
 
-void GUIControl::set_focus(bool focus)
+void Control::set_focus(bool focus)
 {
   impl->focus = focus;
 }
 
-bool GUIControl::get_focus()
+bool Control::get_focus()
 {
   return impl->focus;
 }
 
-sf::Vector2f GUIControl::get_position() const
+sf::Vector2f Control::get_position() const
 {
   return impl->position;
 }
 
-void GUIControl::set_position(sf::Vector2f position)
+void Control::set_position(sf::Vector2f position)
 {
   impl->position = position;
 }
 
-sf::Vector2f GUIControl::get_dimensions() const
+sf::Vector2f Control::get_dimensions() const
 {
   return impl->dimensions;
 }
 
-void GUIControl::set_dimensions(sf::Vector2f dimensions)
+void Control::set_dimensions(sf::Vector2f dimensions)
 {
   impl->dimensions = dimensions;
   impl->control_texture.reset(new sf::RenderTexture());
   impl->control_texture->create(dimensions.x, dimensions.y);
 }
 
-GUIAlign GUIControl::get_alignment() const
+Align Control::get_alignment() const
 {
   return impl->alignment;
 }
 
-void GUIControl::set_alignment(GUIAlign alignment)
+void Control::set_alignment(Align alignment)
 {
   impl->alignment = alignment;
 }
 
-bool GUIControl::is_mouse_inside()
+bool Control::is_visible() const
+{
+  return (impl->appear_state != VisibilityState::Hidden);
+}
+
+void Control::set_visible(bool visible)
+{
+  if (visible == true)
+  {
+    if ((impl->appear_state == VisibilityState::Hidden) ||
+        (impl->appear_state == VisibilityState::Disappearing))
+    {
+      impl->appear_state = VisibilityState::Appearing;
+    }
+  }
+  else // (visible == false)
+  {
+    if ((impl->appear_state == VisibilityState::Visible) ||
+        (impl->appear_state == VisibilityState::Appearing))
+    {
+      impl->appear_state = VisibilityState::Disappearing;
+    }
+  }
+}
+
+bool Control::is_mouse_inside() const
 {
   return impl->captured;
 }
 
-bool GUIControl::add_child(std::shared_ptr<GUIControl> new_child)
+bool Control::add_child(std::shared_ptr<Control> new_child)
 {
   ASSERT_CONDITION(new_child);
 
@@ -112,10 +156,11 @@ bool GUIControl::add_child(std::shared_ptr<GUIControl> new_child)
   }
 
   impl->children.push_back(new_child);
+  new_child->set_parent(this);
   return true;
 }
 
-void GUIControl::must_add_child(std::shared_ptr<GUIControl> new_child)
+void Control::must_add_child(std::shared_ptr<Control> new_child)
 {
   if (!add_child(new_child))
   {
@@ -124,7 +169,7 @@ void GUIControl::must_add_child(std::shared_ptr<GUIControl> new_child)
   }
 }
 
-bool GUIControl::remove_child(std::shared_ptr<GUIControl> old_child)
+bool Control::remove_child(std::shared_ptr<Control> old_child)
 {
   ASSERT_CONDITION(old_child);
 
@@ -135,13 +180,14 @@ bool GUIControl::remove_child(std::shared_ptr<GUIControl> old_child)
     if (iter->get() == old_child.get())
     {
       impl->children.erase(iter);
+      (*iter)->set_parent(nullptr);
       return true;
     }
   }
   return false;
 }
 
-void GUIControl::must_remove_child(std::shared_ptr<GUIControl> old_child)
+void Control::must_remove_child(std::shared_ptr<Control> old_child)
 {
   if (!remove_child(old_child))
   {
@@ -150,7 +196,7 @@ void GUIControl::must_remove_child(std::shared_ptr<GUIControl> old_child)
   }
 }
 
-std::shared_ptr<GUIControl> GUIControl::get_child(std::string const& name) const
+std::shared_ptr<Control> Control::get_child(std::string const& name) const
 {
   for (auto child : impl->children)
   {
@@ -159,10 +205,10 @@ std::shared_ptr<GUIControl> GUIControl::get_child(std::string const& name) const
       return child;
     }
   }
-  return std::shared_ptr<GUIControl>();
+  return std::shared_ptr<Control>();
 }
 
-std::shared_ptr<GUIControl> GUIControl::must_get_child(std::string const& name) const
+std::shared_ptr<Control> Control::must_get_child(std::string const& name) const
 {
   auto found_child = get_child(name);
 
@@ -175,10 +221,39 @@ std::shared_ptr<GUIControl> GUIControl::must_get_child(std::string const& name) 
   return found_child;
 }
 
-void GUIControl::render(sf::RenderTarget& target, int frame)
+void Control::render(sf::RenderTarget& target, int frame)
 {
   auto& control_texture = *(impl->control_texture.get());
   auto const& dimensions = get_dimensions();
+
+  switch (impl->appear_state)
+  {
+  case VisibilityState::Hidden:
+    // If control is not visible, obviously it is not rendered.
+    return;
+
+  case VisibilityState::Appearing:
+    impl->appear_amount += impl->appear_speed;
+
+    if (impl->appear_amount >= 1.0f)
+    {
+      impl->appear_amount = 1.0f;
+      impl->appear_state = VisibilityState::Visible;
+    }
+    break;
+
+  case VisibilityState::Disappearing:
+    impl->appear_amount -= impl->appear_speed;
+    if (impl->appear_amount <= 0.0f)
+    {
+      impl->appear_amount = 0.0f;
+      impl->appear_state = VisibilityState::Hidden;
+    }
+    break;
+
+  default:
+    break;
+  }
 
   // Call the template method to render onto the control texture.
   _render(control_texture, frame);
@@ -193,20 +268,35 @@ void GUIControl::render(sf::RenderTarget& target, int frame)
 
   // Render the control texture onto the target.
   sf::RectangleShape control_shape;
-  control_shape.setSize(dimensions);
+  control_shape.setSize({dimensions.x * powf(impl->appear_amount, 0.1),
+                         dimensions.y * powf(impl->appear_amount, 0.1)});
+
   control_shape.setTexture(&(control_texture.getTexture()), true);
+  control_shape.setFillColor({255, 255, 255, (unsigned char)(impl->appear_amount * 255.0f)});
 
+  /// Control position needs to take alignment into account.
+  sf::Vector2f child_size = control_shape.getSize();
 
-  /// TODO - Adjusted dims need to take alignment into account.
-  control_shape.setPosition(impl->position.x,
-                            impl->position.y);
+  sf::Vector2f adjusted_position = get_anchored_position(child_size);
+
+  control_shape.setPosition(adjusted_position);
+
   target.draw(control_shape);
 }
 
-EventResult GUIControl::handle_event(sf::Event& event)
+EventResult Control::handle_event(sf::Event& event)
 {
   EventResult result = EventResult::Ignored;
   sf::Event event_copy = event;
+
+  /// Take alignment into account.
+  sf::Vector2f adjusted_position = get_anchored_position(impl->dimensions);
+
+  // If control is FULLY visible, it cannot process events.
+  if (impl->appear_state != VisibilityState::Visible)
+  {
+    return EventResult::Ignored;
+  }
 
   switch (event.type)
   {
@@ -214,10 +304,10 @@ EventResult GUIControl::handle_event(sf::Event& event)
   case sf::Event::MouseMoved:
     {
       result = EventResult::Handled;
-      if ((event.mouseMove.x >= impl->position.x) &&
-          (event.mouseMove.x < (impl->position.x + impl->dimensions.x)) &&
-          (event.mouseMove.y >= impl->position.y) &&
-          (event.mouseMove.y < (impl->position.y + impl->dimensions.y)))
+      if ((event.mouseMove.x >= adjusted_position.x) &&
+          (event.mouseMove.x < (adjusted_position.x + impl->dimensions.x)) &&
+          (event.mouseMove.y >= adjusted_position.y) &&
+          (event.mouseMove.y < (adjusted_position.y + impl->dimensions.y)))
       {
         if (impl->captured == false)
         {
@@ -238,9 +328,9 @@ EventResult GUIControl::handle_event(sf::Event& event)
         impl->captured = false;
       }
 
-      /// TODO: Coordinate adjustment must take alignment into account.
-      event_copy.mouseMove.x = event.mouseMove.x - impl->position.x;
-      event_copy.mouseMove.y = event.mouseMove.y - impl->position.y;
+      // Subtract adjusted position so sub-event is relative to parent.
+      event_copy.mouseMove.x = event.mouseMove.x - adjusted_position.x;
+      event_copy.mouseMove.y = event.mouseMove.y - adjusted_position.y;
     }
     break;
 
@@ -265,3 +355,66 @@ EventResult GUIControl::handle_event(sf::Event& event)
 }
 
 // === PROTECTED METHODS ======================================================
+void Control::set_instant_visibility(bool visible)
+{
+  if (visible == false)
+  {
+    impl->appear_amount = 0.0f;
+    impl->appear_state = VisibilityState::Hidden;
+  }
+  else
+  {
+    impl->appear_amount = 1.0f;
+    impl->appear_state = VisibilityState::Visible;
+  }
+}
+
+sf::Vector2f Control::get_anchored_position(sf::Vector2f child_size) const
+{
+  if (impl->parent == nullptr)
+  {
+    return (impl->position);
+  }
+
+  sf::Vector2f parent_size = impl->parent->get_dimensions();
+
+  sf::Vector2f adjusted_position;
+
+  switch (impl->alignment.horiz)
+  {
+  case HorizAlign::Left:
+  default:
+    adjusted_position.x = impl->position.x;
+    break;
+  case HorizAlign::Center:
+    adjusted_position.x = ((parent_size.x - child_size.x) / 2) + impl->position.x;
+    break;
+  case HorizAlign::Right:
+    adjusted_position.x = (parent_size.x - child_size.x) + impl->position.x;
+  break;
+  }
+
+  switch (impl->alignment.vert)
+  {
+  case VertAlign::Top:
+  default:
+    adjusted_position.y = impl->position.y;
+    break;
+  case VertAlign::Center:
+    adjusted_position.y = ((parent_size.y - child_size.y) / 2) + impl->position.y;
+    break;
+  case VertAlign::Bottom:
+    adjusted_position.y = (parent_size.y - child_size.y) + impl->position.y;
+  break;
+  }
+
+  return adjusted_position;
+}
+
+// === PRIVATE METHODS ========================================================
+void Control::set_parent(Control* parent)
+{
+  impl->parent = parent;
+}
+
+} // end namespace GUI

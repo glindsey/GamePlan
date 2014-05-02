@@ -4,10 +4,12 @@
 #include "ConfigSettings.h"
 #include "GUIFont.h"
 
-struct GUIButton::Impl
+namespace GUI {
+
+struct Button::Impl
 {
   /// Text font.
-  std::shared_ptr<GUIFont> text_font;
+  std::shared_ptr<Font> text_font;
 
   /// Button text.
   sf::String text_string;
@@ -25,48 +27,48 @@ struct GUIButton::Impl
   bool pressed;
 };
 
-GUIButton::GUIButton(std::string name,
-                     sf::Vector2f dimensions,
-                     std::shared_ptr<GUIFont> text_font) :
-  GUIControl(name, dimensions),
+Button::Button(std::string name,
+               sf::Vector2f dimensions,
+               std::shared_ptr<Font> text_font) :
+  Control(name, dimensions),
   impl(new Impl())
 {
   impl->text_font = text_font;
 }
 
-GUIButton::~GUIButton()
+Button::~Button()
 {
   //dtor
 }
 
-void GUIButton::set_text(sf::String str)
+void Button::set_text(sf::String str)
 {
   impl->text_string = str;
 }
 
-sf::String GUIButton::get_text()
+sf::String Button::get_text()
 {
   return impl->text_string;
 }
 
-void GUIButton::set_callback_clicked(std::function<void()> callback)
+void Button::set_callback_clicked(std::function<void()> callback)
 {
   impl->callback_clicked = callback;
 }
 
-void GUIButton::set_callback_pressed(std::function<void(bool)> callback)
+void Button::set_callback_pressed(std::function<void(bool)> callback)
 {
   impl->callback_pressed = callback;
 }
 
 // === PROTECTED METHODS ======================================================
 
-GUIFont const& GUIButton::get_text_font() const
+Font const& Button::get_text_font() const
 {
   return *(impl->text_font.get());
 }
 
-EventResult GUIButton::_handle_event(sf::Event& event)
+EventResult Button::_handle_event(sf::Event& event)
 {
   EventResult result = EventResult::Ignored;
 
@@ -125,7 +127,7 @@ EventResult GUIButton::_handle_event(sf::Event& event)
   return result;
 }
 
-void GUIButton::_render(sf::RenderTarget& target, int frame)
+void Button::_render(sf::RenderTarget& target, int frame)
 {
   // Render the background (if any).
   _render_background(target, frame);
@@ -138,7 +140,7 @@ void GUIButton::_render(sf::RenderTarget& target, int frame)
   }
 }
 
-void GUIButton::_render_background(sf::RenderTarget& target, int frame)
+void Button::_render_background(sf::RenderTarget& target, int frame)
 {
   auto const& dimensions = get_dimensions();
 
@@ -184,7 +186,7 @@ void GUIButton::_render_background(sf::RenderTarget& target, int frame)
   target.draw(shape);
 }
 
-void GUIButton::_render_text(sf::RenderTarget& target, int frame)
+void Button::_render_text(sf::RenderTarget& target, int frame)
 {
   auto const& dimensions = get_dimensions();
   auto const& text_font = get_text_font();
@@ -203,3 +205,5 @@ void GUIButton::_render_text(sf::RenderTarget& target, int frame)
   button_text.setPosition(dimensions.x / 2, dimensions.y / 2);
   target.draw(button_text);
 }
+
+} // end namespace GUI

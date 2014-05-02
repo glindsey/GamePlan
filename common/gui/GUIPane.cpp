@@ -4,50 +4,55 @@
 #include "ConfigSettings.h"
 #include "GUIFont.h"
 
-struct GUIPane::Impl
+namespace GUI {
+
+struct Pane::Impl
 {
   /// Title.
   sf::String title_string;
 
   /// Title font.
-  std::shared_ptr<GUIFont> title_font;
+  std::shared_ptr<Font> title_font;
 
   /// Background shape.
   sf::RectangleShape bg_shape;
 };
 
-GUIPane::GUIPane(std::string name,
-                 sf::Vector2f dimensions,
-                 std::shared_ptr<GUIFont> title_font) :
-  GUIControl(name, dimensions),
-  impl(new Impl())
+Pane::Pane(std::string name,
+           sf::Vector2f dimensions,
+           std::shared_ptr<Font> title_font)
+  : Control(name, dimensions),
+    impl(new Impl())
 {
   impl->title_font = title_font;
+
+  /// Pane instances start out hidden until manually shown.
+  set_instant_visibility(false);
 }
 
-GUIPane::~GUIPane()
+Pane::~Pane()
 {
   //dtor
 }
 
-void GUIPane::set_title(sf::String str)
+void Pane::set_title(sf::String str)
 {
   impl->title_string = str;
 }
 
-sf::String GUIPane::get_title() const
+sf::String Pane::get_title() const
 {
   return impl->title_string;
 }
 
 // === PROTECTED METHODS ======================================================
 
-EventResult GUIPane::_handle_event(sf::Event& event)
+EventResult Pane::_handle_event(sf::Event& event)
 {
   return EventResult::Ignored;
 }
 
-void GUIPane::_render(sf::RenderTarget& target, int frame)
+void Pane::_render(sf::RenderTarget& target, int frame)
 {
   auto const& dimensions = get_dimensions();
 
@@ -115,8 +120,9 @@ void GUIPane::_render(sf::RenderTarget& target, int frame)
   target.draw(border_shape);
 }
 
-void GUIPane::_render_contents(sf::RenderTarget& target, int frame)
+void Pane::_render_contents(sf::RenderTarget& target, int frame)
 {
   // Default implementation does nothing.
 }
 
+} // end namespace GUI

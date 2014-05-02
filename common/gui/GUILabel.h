@@ -7,17 +7,19 @@
 
 #include "GUIControl.h"
 
-// Forward declarations
-class GUIFont;
+namespace GUI {
 
-class GUILabel :
-  public GUIControl
+// Forward declarations
+class Font;
+
+class Label :
+  public Control
 {
   public:
-    GUILabel(std::string name,
-             sf::Vector2f dimensions,
-             std::shared_ptr<GUIFont> title_font);
-    virtual ~GUILabel();
+    Label(std::string name,
+          sf::Vector2f dimensions,
+          std::shared_ptr<Font> title_font);
+    virtual ~Label();
 
     void set_text(sf::String str);
     sf::String get_text(void) const;
@@ -31,5 +33,7 @@ class GUILabel :
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
+
+} // end namespace GUI
 
 #endif // GUILABEL_H

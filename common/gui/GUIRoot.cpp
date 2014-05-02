@@ -1,25 +1,29 @@
 #include "GUIRoot.h"
 
-GUIRoot::GUIRoot(std::string name,
-                 sf::Vector2f dimensions)
-  : GUIControl(name, dimensions)
+namespace GUI {
+
+Root::Root(std::string name,
+           sf::Vector2f dimensions)
+  : Control(name, dimensions)
 {
   //ctor
 }
 
-GUIRoot::~GUIRoot()
+Root::~Root()
 {
   //dtor
 }
 
 // === PROTECTED METHODS ======================================================
 
-EventResult GUIRoot::_handle_event(sf::Event& event)
+EventResult Root::_handle_event(sf::Event& event)
 {
   return EventResult::Ignored;
 }
 
-void GUIRoot::_render(sf::RenderTarget& target, int frame)
+void Root::_render(sf::RenderTarget& target, int frame)
 {
   /// Implementation does nothing.
 }
+
+} // end namespace GUI

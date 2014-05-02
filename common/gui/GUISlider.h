@@ -8,20 +8,22 @@
 #include "GUIControl.h"
 #include "GUIEnums.h"
 
-// Forward declarations
-class GUIFont;
+namespace GUI {
 
-class GUISlider :
-  public GUIControl
+// Forward declarations
+class Font;
+
+class Slider :
+  public Control
 {
   public:
-    GUISlider(std::string name,
-              sf::FloatRect dimensions,
-              std::pair<long int> extents,
-              GUIOrientation orientation = GUIOrientation::Horizontal);
-    virtual ~GUISlider();
+    Slider(std::string name,
+           sf::FloatRect dimensions,
+           std::pair<long int> extents,
+           Orientation orientation = Orientation::Horizontal);
+    virtual ~Slider();
 
-    GUIOrientation get_orientation(void) const;
+    Orientation get_orientation(void) const;
 
     /// Set both the minimum and maximum values of the slider.
     /// @param extents A pair containing the minimum and maximum values.
@@ -65,5 +67,7 @@ class GUISlider :
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
+
+} // end namespace GUI
 
 #endif // GUILABEL_H

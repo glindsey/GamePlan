@@ -3,6 +3,7 @@
 #include "App.h"
 
 #include "gui/GUIButton.h"
+#include "gui/GUIEnums.h"
 #include "gui/GUIFont.h"
 #include "gui/GUIPane.h"
 
@@ -11,23 +12,25 @@ struct AppStateMainMenu::Impl
   sf::Text title;
   sf::Text subtitle;
 
-  std::shared_ptr<GUIPane> main_menu_pane;
+  std::shared_ptr<GUI::Pane> main_menu_pane;
 };
 
 AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   : State(state_machine), impl(new Impl())
 {
-  impl->main_menu_pane.reset(new GUIPane("main_menu_pane", {400, 200},
-                                         app_->get_default_font()));
-  impl->main_menu_pane->set_position({200, 200});
-  impl->main_menu_pane->set_title("Test GUIPane");
+  impl->main_menu_pane.reset(new GUI::Pane("main_menu_pane", {400, 200},
+                                           app_->get_default_font()));
+  impl->main_menu_pane->set_position({100, 100});
+  impl->main_menu_pane->set_title("Test GUI Pane");
 
-  std::shared_ptr<GUIButton> test_button;
-  test_button.reset(new GUIButton("test_button", {150, 40},
-                                  app_->get_default_font()));
-  test_button->set_position({10, 100});
+  std::shared_ptr<GUI::Button> test_button;
+  test_button.reset(new GUI::Button("test_button", {150, 40},
+                                    app_->get_default_font()));
+  test_button->set_alignment({GUI::HorizAlign::Center, GUI::VertAlign::Center});
   test_button->set_text("Test Button");
   impl->main_menu_pane->add_child(test_button);
+
+  impl->main_menu_pane->set_visible(true);
 }
 
 AppStateMainMenu::~AppStateMainMenu()
@@ -87,7 +90,7 @@ std::string const& AppStateMainMenu::get_name()
 
 bool AppStateMainMenu::initialize()
 {
-  std::shared_ptr<GUIFont> default_font = app_->get_default_font();
+  std::shared_ptr<GUI::Font> default_font = app_->get_default_font();
 
   impl->title.setString("GUI Element Test");
   impl->title.setFont(default_font->get_normal_font());

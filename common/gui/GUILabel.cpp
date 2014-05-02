@@ -4,48 +4,50 @@
 #include "ConfigSettings.h"
 #include "GUIFont.h"
 
-struct GUILabel::Impl
+namespace GUI {
+
+struct Label::Impl
 {
   /// Title.
   sf::String text_string;
 
   /// Title font.
-  std::shared_ptr<GUIFont> text_font;
+  std::shared_ptr<Font> text_font;
 
 };
 
-GUILabel::GUILabel(std::string name,
-                 sf::Vector2f dimensions,
-                 std::shared_ptr<GUIFont> text_font) :
-  GUIControl(name, dimensions),
+Label::Label(std::string name,
+             sf::Vector2f dimensions,
+             std::shared_ptr<Font> text_font) :
+  Control(name, dimensions),
   impl(new Impl())
 {
   impl->text_font = text_font;
 }
 
-GUILabel::~GUILabel()
+Label::~Label()
 {
   //dtor
 }
 
-void GUILabel::set_text(sf::String str)
+void Label::set_text(sf::String str)
 {
   impl->text_string = str;
 }
 
-sf::String GUILabel::get_text() const
+sf::String Label::get_text() const
 {
   return impl->text_string;
 }
 
 // === PROTECTED METHODS ======================================================
 
-EventResult GUILabel::_handle_event(sf::Event& event)
+EventResult Label::_handle_event(sf::Event& event)
 {
   return EventResult::Ignored;
 }
 
-void GUILabel::_render(sf::RenderTarget& target, int frame)
+void Label::_render(sf::RenderTarget& target, int frame)
 {
   //int line_spacing_y = impl->text_font->get_normal_font().getLineSpacing(Settings.text_title_size);
 
@@ -65,3 +67,5 @@ void GUILabel::_render(sf::RenderTarget& target, int frame)
     target.draw(text);
   }
 }
+
+} // end namespace GUI

@@ -24,8 +24,8 @@ struct App::Impl
     std::unique_ptr<boost::random::mt19937> rng;
     std::unique_ptr<sf::RenderWindow> app_window;
     sf::Vector2u app_window_size;
-    std::shared_ptr<GUIFont> default_font;
-    std::shared_ptr<GUIFont> default_mono_font;
+    std::shared_ptr<GUI::Font> default_font;
+    std::shared_ptr<GUI::Font> default_mono_font;
     std::unique_ptr<TextureAtlas> texture_atlas;
     std::unique_ptr<StateMachine> state_machine;
     bool is_running;
@@ -66,8 +66,8 @@ App::App(std::string name)
     FATAL_ERROR("Could not load the default monospace font (" + Settings.font_name_mono + ".ttf)");
   }
 
-  impl->default_font.reset(new GUIFont(normal_font, bold_font));
-  impl->default_mono_font.reset(new GUIFont(mono_font));
+  impl->default_font.reset(new GUI::Font(normal_font, bold_font));
+  impl->default_mono_font.reset(new GUI::Font(mono_font));
 
   // Create the texture atlas.
   impl->texture_atlas.reset(new TextureAtlas());
@@ -199,7 +199,7 @@ int App::get_rand(int minimum, int maximum)
    return dist(*(impl->rng.get()));
 }
 
-std::shared_ptr<GUIFont> App::get_default_font()
+std::shared_ptr<GUI::Font> App::get_default_font()
 {
   return impl->default_font;
 }

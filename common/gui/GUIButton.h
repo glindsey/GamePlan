@@ -8,17 +8,19 @@
 
 #include "GUIControl.h"
 
-// Forward declarations
-class GUIFont;
+namespace GUI {
 
-class GUIButton :
-  public GUIControl
+// Forward declarations
+class Font;
+
+class Button :
+  public Control
 {
   public:
-    GUIButton(std::string name,
-              sf::Vector2f dimensions,
-              std::shared_ptr<GUIFont> text_font);
-    virtual ~GUIButton();
+    Button(std::string name,
+            sf::Vector2f dimensions,
+            std::shared_ptr<Font> text_font);
+    virtual ~Button();
 
     void set_text(sf::String str);
     sf::String get_text(void);
@@ -33,7 +35,7 @@ class GUIButton :
     void set_callback_pressed(std::function<void(bool)> callback);
 
   protected:
-    GUIFont const& get_text_font() const;
+    Font const& get_text_font() const;
 
     virtual EventResult _handle_event(sf::Event& event) override;
 
@@ -47,5 +49,7 @@ class GUIButton :
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
+
+} // end namespace GUI
 
 #endif // GUIBUTTON_H
