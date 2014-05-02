@@ -11,6 +11,7 @@ namespace GUI {
 
 // Forward declarations
 class Align;
+class IControlApparator;
 
 class Control :
   public EventHandler,
@@ -38,6 +39,9 @@ class Control :
     bool is_visible() const;
     void set_visible(bool visible);
 
+    std::shared_ptr<IControlApparator> get_apparator();
+    void set_apparator(std::shared_ptr<IControlApparator> apparator);
+
     bool is_mouse_inside() const;
 
     bool add_child(std::shared_ptr<Control> new_child);
@@ -60,7 +64,8 @@ class Control :
 
     /// Given parent size, and child size, position and alignment, return
     /// adjusted absolute coordinates.
-    sf::Vector2f get_anchored_position(sf::Vector2f child_size) const;
+    sf::Vector2f get_anchored_position(sf::Vector2f child_position,
+                                       sf::Vector2f child_size) const;
 
     /// Template method for rendering the control. Pure virtual in GUIControl.
     /// @param target Target to render to.

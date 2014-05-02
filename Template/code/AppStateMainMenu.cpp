@@ -21,12 +21,15 @@ AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   impl->main_menu_pane.reset(new GUI::Pane("main_menu_pane", {400, 200},
                                            app_->get_default_font()));
   impl->main_menu_pane->set_position({100, 100});
+  impl->main_menu_pane->set_alignment({GUI::HorizAlign::Center,
+                                       GUI::VertAlign::Center});
   impl->main_menu_pane->set_title("Test GUI Pane");
 
   std::shared_ptr<GUI::Button> test_button;
   test_button.reset(new GUI::Button("test_button", {150, 40},
                                     app_->get_default_font()));
-  test_button->set_alignment({GUI::HorizAlign::Center, GUI::VertAlign::Center});
+  test_button->set_alignment({GUI::HorizAlign::Center,
+                              GUI::VertAlign::Center});
   test_button->set_text("Test Button");
   impl->main_menu_pane->add_child(test_button);
 

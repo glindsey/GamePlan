@@ -2,8 +2,9 @@
 
 #include "ErrorMacros.h"
 #include "GUIEnums.h"
+#include "IControlApparator.h"
 
-#include "boost/format.hpp"
+#include <boost/format.hpp>
 
 namespace GUI {
 
@@ -30,6 +31,10 @@ struct Control::Impl
 
   /// How fast this control appears: 0 = never (don't do this!), 1 = instantaneous.
   float appear_speed;
+
+  /// Shared pointer to IControlApparator defining how the control should
+  /// appear/disappear.
+  std::shared_ptr<IControlApparator> apparator;
 
   /// Current visibility state of this control and its children.
   VisibilityState appear_state;
@@ -136,6 +141,16 @@ void Control::set_visible(bool visible)
       impl->appear_state = VisibilityState::Disappearing;
     }
   }
+}
+
+std::shared_ptr<IControlApparator> Control::get_apparator()
+{
+  return impl->apparator;
+}
+
+void Control::set_apparator(std::shared_ptr<IControlApparator> apparator)
+{
+  impl->apparator = apparator;
 }
 
 bool Control::is_mouse_inside() const
@@ -268,19 +283,36 @@ void Control::render(sf::RenderTarget& target, int frame)
 
   // Render the control texture onto the target.
   sf::RectangleShape control_shape;
+
+  control_shape.setSize(impl->dimensions);
+  control_shape.setPosition(impl->position);
+
+  if (impl->apparator)
+  {
+    impl->apparator->alter_texture(control_texture,
+                                   impl->appear_state,
+                                   impl->appear_amount);
+
+    impl->apparator->alter_shape(control_shape,
+                                 impl->appear_state,
+                                 impl->appear_amount);
+  }
+
+  control_shape.setTexture(&(control_texture.getTexture()), true);
+
+  /*** GSL: This code will be replaced with the apparator lines above ********/
   control_shape.setSize({dimensions.x * powf(impl->appear_amount, 0.1),
                          dimensions.y * powf(impl->appear_amount, 0.1)});
 
-  control_shape.setTexture(&(control_texture.getTexture()), true);
   control_shape.setFillColor({255, 255, 255, (unsigned char)(impl->appear_amount * 255.0f)});
+  /***************************************************************************/
 
-  /// Control position needs to take alignment into account.
-  sf::Vector2f child_size = control_shape.getSize();
-
-  sf::Vector2f adjusted_position = get_anchored_position(child_size);
-
+  /// Adjust position based on control alignment.
+  sf::Vector2f child_position = control_shape.getPosition();
+  sf::Vector2f child_dimensions = control_shape.getSize();
+  sf::Vector2f adjusted_position = get_anchored_position(child_position,
+                                                         child_dimensions);
   control_shape.setPosition(adjusted_position);
-
   target.draw(control_shape);
 }
 
@@ -290,7 +322,8 @@ EventResult Control::handle_event(sf::Event& event)
   sf::Event event_copy = event;
 
   /// Take alignment into account.
-  sf::Vector2f adjusted_position = get_anchored_position(impl->dimensions);
+  sf::Vector2f adjusted_position = get_anchored_position(impl->position,
+                                                         impl->dimensions);
 
   // If control is FULLY visible, it cannot process events.
   if (impl->appear_state != VisibilityState::Visible)
@@ -369,11 +402,12 @@ void Control::set_instant_visibility(bool visible)
   }
 }
 
-sf::Vector2f Control::get_anchored_position(sf::Vector2f child_size) const
+sf::Vector2f Control::get_anchored_position(sf::Vector2f child_position,
+                                            sf::Vector2f child_size) const
 {
   if (impl->parent == nullptr)
   {
-    return (impl->position);
+    return (child_position);
   }
 
   sf::Vector2f parent_size = impl->parent->get_dimensions();
@@ -384,13 +418,13 @@ sf::Vector2f Control::get_anchored_position(sf::Vector2f child_size) const
   {
   case HorizAlign::Left:
   default:
-    adjusted_position.x = impl->position.x;
+    adjusted_position.x = child_position.x;
     break;
   case HorizAlign::Center:
-    adjusted_position.x = ((parent_size.x - child_size.x) / 2) + impl->position.x;
+    adjusted_position.x = ((parent_size.x - child_size.x) / 2) + child_position.x;
     break;
   case HorizAlign::Right:
-    adjusted_position.x = (parent_size.x - child_size.x) + impl->position.x;
+    adjusted_position.x = (parent_size.x - child_size.x) + child_position.x;
   break;
   }
 
@@ -398,13 +432,13 @@ sf::Vector2f Control::get_anchored_position(sf::Vector2f child_size) const
   {
   case VertAlign::Top:
   default:
-    adjusted_position.y = impl->position.y;
+    adjusted_position.y = child_position.y;
     break;
   case VertAlign::Center:
-    adjusted_position.y = ((parent_size.y - child_size.y) / 2) + impl->position.y;
+    adjusted_position.y = ((parent_size.y - child_size.y) / 2) + child_position.y;
     break;
   case VertAlign::Bottom:
-    adjusted_position.y = (parent_size.y - child_size.y) + impl->position.y;
+    adjusted_position.y = (parent_size.y - child_size.y) + child_position.y;
   break;
   }
 

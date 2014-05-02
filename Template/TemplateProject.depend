@@ -7765,17 +7765,18 @@
 	<vector>
 	"GUIControl.h"
 
-1398997356 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
+1398999789 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
 	<SFML/Graphics.hpp>
 	<memory>
 	"EventHandler.h"
 	"Renderable.h"
 
-1398997751 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
+1398999911 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
 	"GUIControl.h"
 	"ErrorMacros.h"
 	"GUIEnums.h"
-	"boost/format.hpp"
+	"IControlApparator.h"
+	<boost/format.hpp>
 
 1398997389 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guienums.h
 
@@ -9061,7 +9062,7 @@
 	"AppStateGameMode.h"
 	"App.h"
 
-1398998209 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
+1399000080 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
 	"AppStateMainMenu.h"
 	"App.h"
 	"gui/GUIButton.h"
@@ -9084,4 +9085,8 @@
 
 1396490848 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\main.cpp
 	"AppTemplate.h"
+
+1398999819 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\icontrolapparator.h
+	<SFML/Graphics.hpp>
+	"GUIEnums.h"
 
