@@ -14,6 +14,9 @@ struct Pane::Impl
   /// Title font.
   std::shared_ptr<Font> title_font;
 
+  /// Title alignment on the Pane.
+  HorizAlign title_alignment;
+
   /// Background shape.
   sf::RectangleShape bg_shape;
 };
@@ -25,6 +28,7 @@ Pane::Pane(std::string name,
     impl(new Impl())
 {
   impl->title_font = title_font;
+  impl->title_alignment = HorizAlign::Center;
 
   /// Pane instances start out hidden until manually shown.
   set_instant_visibility(false);
@@ -45,6 +49,16 @@ sf::String Pane::get_title() const
   return impl->title_string;
 }
 
+void Pane::set_title_alignment(HorizAlign alignment)
+{
+  impl->title_alignment = alignment;
+}
+
+HorizAlign Pane::get_title_alignment() const
+{
+  return impl->title_alignment;
+}
+
 // === PROTECTED METHODS ======================================================
 
 EventResult Pane::_handle_event(sf::Event& event)
@@ -56,11 +70,10 @@ void Pane::_render(sf::RenderTarget& target, int frame)
 {
   auto const& dimensions = get_dimensions();
 
-  int title_spacing_y = impl->title_font->get_bold_font().getLineSpacing(Settings.text_title_size);
+  int title_height = impl->title_font->get_bold_font().getLineSpacing(Settings.text_title_size);
 
-  // Text offsets relative to the background rectangle.
-  float text_offset_x = 3;
-  float text_offset_y = 3;
+  // Text margins relative to the background rectangle.
+  sf::Vector2f text_margin{10, 5};
 
   // Clear target texture.
   sf::RectangleShape bg_shape;
@@ -91,7 +104,7 @@ void Pane::_render(sf::RenderTarget& target, int frame)
     title_rect.setOutlineThickness(Settings.window_border_width);
     title_rect.setPosition(sf::Vector2f(0, 0));
     title_rect.setSize(sf::Vector2f(dimensions.x,
-                                    title_spacing_y + (text_offset_y * 2)));
+                                    title_height + (text_margin.y * 2)));
 
     target.draw(title_rect);
 
@@ -100,8 +113,38 @@ void Pane::_render(sf::RenderTarget& target, int frame)
     title_text.setCharacterSize(Settings.text_title_size);
 
     title_text.setColor(Settings.window_bg_color);
-    title_text.setPosition(sf::Vector2f(text_offset_x + title_spacing_y,
-                                        text_offset_y));
+
+    sf::FloatRect rect_bounds = title_rect.getGlobalBounds();
+    sf::FloatRect text_bounds = title_text.getGlobalBounds();
+
+    sf::Vector2f text_origin;
+    sf::Vector2f text_position;
+
+    text_origin.y = text_bounds.top + (text_bounds.height / 2);
+    text_position.y = rect_bounds.top + (rect_bounds.height / 2);
+
+    switch (impl->title_alignment)
+    {
+    case HorizAlign::Left:
+      text_origin.x = text_bounds.left;
+      text_position.x = rect_bounds.left +
+                        (text_margin.x + Settings.window_border_width);
+      break;
+
+    case HorizAlign::Center:
+      text_origin.x = text_bounds.left + (text_bounds.width / 2);
+      text_position.x = rect_bounds.left + (rect_bounds.width / 2);
+      break;
+
+    case HorizAlign::Right:
+      text_origin.x = text_bounds.left + text_bounds.width;
+      text_position.x = (rect_bounds.left + rect_bounds.width) -
+                        (text_margin.x + Settings.window_border_width);
+      break;
+    }
+    title_text.setOrigin(text_origin);
+    title_text.setPosition(text_position);
+
     target.draw(title_text);
   }
 

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "GUIControl.h"
+#include "GUIEnums.h"
 
 namespace GUI {
 
@@ -22,7 +23,10 @@ class Pane :
     virtual ~Pane();
 
     void set_title(sf::String str);
-    sf::String get_title(void) const;
+    sf::String get_title() const;
+
+    void set_title_alignment(HorizAlign alignment);
+    HorizAlign get_title_alignment() const;
 
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;

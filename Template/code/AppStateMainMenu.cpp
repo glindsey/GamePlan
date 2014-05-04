@@ -5,6 +5,7 @@
 #include "gui/GUIButton.h"
 #include "gui/GUIEnums.h"
 #include "gui/GUIFont.h"
+#include "gui/GUILabel.h"
 #include "gui/GUIPane.h"
 
 struct AppStateMainMenu::Impl
@@ -18,20 +19,31 @@ struct AppStateMainMenu::Impl
 AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   : State(state_machine), impl(new Impl())
 {
-  impl->main_menu_pane.reset(new GUI::Pane("main_menu_pane", {400, 200},
+  impl->main_menu_pane.reset(new GUI::Pane("main_menu_pane", {600, 400},
                                            app_->get_default_font()));
   impl->main_menu_pane->set_position({100, 100});
   impl->main_menu_pane->set_alignment({GUI::HorizAlign::Center,
                                        GUI::VertAlign::Center});
+
   impl->main_menu_pane->set_title("Test GUI Pane");
 
   std::shared_ptr<GUI::Button> test_button;
   test_button.reset(new GUI::Button("test_button", {150, 40},
                                     app_->get_default_font()));
+  test_button->set_position({0, 0});
   test_button->set_alignment({GUI::HorizAlign::Center,
                               GUI::VertAlign::Center});
   test_button->set_text("Test Button");
   impl->main_menu_pane->add_child(test_button);
+
+  std::shared_ptr<GUI::Label> test_label;
+  test_label.reset(new GUI::Label("test_label", {500, 100},
+                                  app_->get_default_font()));
+  test_label->set_position({0, -10});
+  test_label->set_alignment({GUI::HorizAlign::Center,
+                             GUI::VertAlign::Bottom});
+  test_label->set_text("Test Label");
+  impl->main_menu_pane->add_child(test_label);
 
   impl->main_menu_pane->set_visible(true);
 }

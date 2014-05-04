@@ -16,7 +16,7 @@ class ConfigSettings
     /// If the instance does not yet exist, it is constructed and initialized.
     static ConfigSettings& instance();
 
-
+    bool debug_control_borders;             ///< If true, borders are drawn around borderless controls.
     sf::Color window_border_color;          ///< Window border color.
     sf::Color window_focused_border_color;  ///< Focused window border color.
     sf::Color window_bg_color;              ///< Window background color.

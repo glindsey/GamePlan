@@ -6168,7 +6168,7 @@
 	<memory>
 	"State.h"
 
-1397402221 c:\gdrive\hobby\gamedev\projects\gameplan\common\configsettings.h
+1399073349 c:\gdrive\hobby\gamedev\projects\gameplan\common\configsettings.h
 	<memory>
 	<string>
 	<SFML/Graphics.hpp>
@@ -7744,7 +7744,7 @@
 	<cstddef>
 	<boost/config.hpp>
 
-1397403276 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\configsettings.cpp
+1399073349 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\configsettings.cpp
 	"ConfigSettings.h"
 
 1396720363 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\errormacros.cpp
@@ -7785,29 +7785,31 @@
 	<SFML/Graphics.hpp>
 	<memory>
 
-1398998197 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.cpp
+1399075594 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.cpp
 	"gui/GUILabel.h"
 	"App.h"
 	"ConfigSettings.h"
 	"GUIFont.h"
 
-1398997490 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.h
+1399075027 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.h
 	<SFML/Graphics.hpp>
 	<memory>
 	<vector>
 	"GUIControl.h"
+	"GUIEnums.h"
 
-1398997952 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.cpp
+1399075472 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.cpp
 	"gui/GUIPane.h"
 	"App.h"
 	"ConfigSettings.h"
 	"GUIFont.h"
 
-1398997524 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.h
+1399070728 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.h
 	<SFML/Graphics.hpp>
 	<memory>
 	<vector>
 	"GUIControl.h"
+	"GUIEnums.h"
 
 1398997991 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.cpp
 	"GUIRoot.h"
@@ -9062,12 +9064,13 @@
 	"AppStateGameMode.h"
 	"App.h"
 
-1399000080 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
+1399075624 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
 	"AppStateMainMenu.h"
 	"App.h"
 	"gui/GUIButton.h"
 	"gui/GUIEnums.h"
 	"gui/GUIFont.h"
+	"gui/GUILabel.h"
 	"gui/GUIPane.h"
 
 1397611665 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatesplashscreen.cpp

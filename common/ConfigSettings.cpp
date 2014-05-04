@@ -4,6 +4,7 @@ std::unique_ptr<ConfigSettings> ConfigSettings::instance_;
 
 ConfigSettings::ConfigSettings()
 {
+  debug_control_borders       = true;
   window_border_color         = sf::Color( 48,  24, 224, 255);
   window_focused_border_color = sf::Color( 96,  48, 255, 255);
   window_bg_color             = sf::Color(255, 255, 255, 255);

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "GUIControl.h"
+#include "GUIEnums.h"
 
 namespace GUI {
 
@@ -22,7 +23,13 @@ class Label :
     virtual ~Label();
 
     void set_text(sf::String str);
-    sf::String get_text(void) const;
+    sf::String get_text() const;
+
+    void set_text_size(unsigned int text_size);
+    unsigned int get_text_size() const;
+
+    void set_text_alignment(Align alignment);
+    Align get_text_alignment() const;
 
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;
