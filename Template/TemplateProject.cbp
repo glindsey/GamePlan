@@ -14,6 +14,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="common/gui" />
 				</Compiler>
 				<Linker>
 					<Add library="sfml-graphics-s-d" />
@@ -29,6 +30,7 @@
 				<Compiler>
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
+					<Add directory="common/gui" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -93,6 +95,7 @@
 		<Unit filename="../common/gui/GUIRoot.cpp" />
 		<Unit filename="../common/gui/GUIRoot.h" />
 		<Unit filename="../common/gui/GUISlider.h" />
+		<Unit filename="../common/gui/IControlApparator.h" />
 		<Unit filename="code/AppStateGameMode.cpp" />
 		<Unit filename="code/AppStateGameMode.h" />
 		<Unit filename="code/AppStateMainMenu.cpp" />
@@ -103,7 +106,10 @@
 		<Unit filename="code/AppTemplate.h" />
 		<Unit filename="code/main.cpp" />
 		<Extensions>
-			<code_completion />
+			<code_completion>
+				<search_path add="..\..\..\libraries\boost_1_55_0\boost" />
+				<search_path add="..\..\..\libraries\SFML-2.1\include" />
+			</code_completion>
 			<envvars />
 			<debugger />
 			<lib_finder disable_auto="1" />

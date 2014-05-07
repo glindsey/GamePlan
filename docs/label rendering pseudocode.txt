@@ -1,0 +1,48 @@
+Label rendering pseudocode
+==========================
+
+if (string is empty)
+{
+	quit
+}
+line_number = 0
+start_of_word = 1st char of string
+while ((start_of_word != <end of string>) && 
+       (line_number < lines that fit on target))
+{
+	start_of_line = start_of_word
+	end_of_word = end of the word started by start_of_word
+	line = empty string
+	
+	do
+	{
+		word = label[start_of_word to end_of_word]
+		previous_line = line
+		append word to end of line
+		
+		rendered_line = render line onto a temporary graphical buffer
+		start_of_word = start of next word following end_of_word, 
+		                or <end of string> if none follows
+	} while (rendered_line.width < target.width)
+
+	// TODO: If previous_line is empty here, we have a single word that exceeds
+	//       the width of the target, so we have to go character-by-character
+	//       to cut it off.
+	if (previous_line != empty)
+	{
+		do
+		{
+			--end_of_word
+			cut one character off end of line
+			rendered_line = render line onto a temporary graphical buffer
+			start_of_word = end_of_word + 1
+		} while ((rendered_line.width < target.width) && 
+		         (end_of_word != start_of_line))
+	}
+	
+	line = previous_line
+	
+	// Now we have the largest line that will fit onto the target.
+	copy rendered_line onto target
+	++line_number
+}

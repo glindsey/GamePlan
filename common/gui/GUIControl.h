@@ -67,6 +67,15 @@ class Control :
     sf::Vector2f get_anchored_position(sf::Vector2f child_position,
                                        sf::Vector2f child_size) const;
 
+    /// Template method for updating the control's appearance.
+    /// This is used by any subclass that wishes to cache the rendered
+    /// appearance, rather than rendering from scratch every frame. It is
+    /// called by set_position, set_dimensions, set_alignment -- basically,
+    /// any time the contents of the control may be updated.
+    ///
+    /// The default implementation of this method does nothing.
+    virtual void _update_appearance();
+
     /// Template method for rendering the control. Pure virtual in GUIControl.
     /// @param target Target to render to.
     /// @param frame Animation frame to render.

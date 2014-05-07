@@ -79,6 +79,7 @@ std::string Control::get_name() const
 void Control::set_focus(bool focus)
 {
   impl->focus = focus;
+  _update_appearance();
 }
 
 bool Control::get_focus()
@@ -94,6 +95,7 @@ sf::Vector2f Control::get_position() const
 void Control::set_position(sf::Vector2f position)
 {
   impl->position = position;
+  _update_appearance();
 }
 
 sf::Vector2f Control::get_dimensions() const
@@ -106,6 +108,7 @@ void Control::set_dimensions(sf::Vector2f dimensions)
   impl->dimensions = dimensions;
   impl->control_texture.reset(new sf::RenderTexture());
   impl->control_texture->create(dimensions.x, dimensions.y);
+  _update_appearance();
 }
 
 Align Control::get_alignment() const
@@ -116,6 +119,7 @@ Align Control::get_alignment() const
 void Control::set_alignment(Align alignment)
 {
   impl->alignment = alignment;
+  _update_appearance();
 }
 
 bool Control::is_visible() const
@@ -141,6 +145,7 @@ void Control::set_visible(bool visible)
       impl->appear_state = VisibilityState::Disappearing;
     }
   }
+  _update_appearance();
 }
 
 std::shared_ptr<IControlApparator> Control::get_apparator()
@@ -443,6 +448,11 @@ sf::Vector2f Control::get_anchored_position(sf::Vector2f child_position,
   }
 
   return adjusted_position;
+}
+
+void Control::_update_appearance()
+{
+  /* The default implementation of this method does nothing. */
 }
 
 // === PRIVATE METHODS ========================================================

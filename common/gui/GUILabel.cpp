@@ -41,6 +41,7 @@ Label::~Label()
 void Label::set_text(sf::String str)
 {
   impl->text_string = str;
+  _update_appearance();
 }
 
 sf::String Label::get_text() const
@@ -51,6 +52,7 @@ sf::String Label::get_text() const
 void Label::set_text_size(unsigned int text_size)
 {
   impl->text_size = text_size;
+  _update_appearance();
 }
 
 unsigned int Label::get_text_size() const
@@ -61,6 +63,7 @@ unsigned int Label::get_text_size() const
 void Label::set_text_alignment(Align alignment)
 {
   impl->text_alignment = alignment;
+  _update_appearance();
 }
 
 Align Label::get_text_alignment() const
@@ -78,12 +81,10 @@ EventResult Label::_handle_event(sf::Event& event)
 
 void Label::_render(sf::RenderTarget& target, int frame)
 {
-  // GSL TODO: Handle proper line wrapping for labels.
-
   sf::Vector2u dimensions = target.getSize();
   target.clear(sf::Color::Transparent);
 
-  //int line_spacing_y = impl->text_font->get_normal_font().getLineSpacing(Settings.text_default_size);
+  int line_spacing_y = impl->text_font->get_normal_font().getLineSpacing(Settings.text_default_size);
 
   // IF there is some text...
   if (!(impl->text_string.isEmpty()))
@@ -106,6 +107,8 @@ void Label::_render(sf::RenderTarget& target, int frame)
 
       target.draw(rect);
     }
+
+    /// @todo Handle proper line wrapping for labels.
 
     // Draw the text.
     sf::Text text;
