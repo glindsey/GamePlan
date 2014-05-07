@@ -11,23 +11,33 @@ while ((start_of_word != <end of string>) &&
        (line_number < lines that fit on target))
 {
 	start_of_line = start_of_word
-	end_of_word = end of the word started by start_of_word
 	line = empty string
 	
 	do
 	{
+		end_of_word = end of the word started by start_of_word
+		
 		word = label[start_of_word to end_of_word]
 		previous_line = line
 		append word to end of line
 		
 		rendered_line = render line onto a temporary graphical buffer
-		start_of_word = start of next word following end_of_word, 
-		                or <end of string> if none follows
-	} while (rendered_line.width < target.width)
+		start_of_word = end_of_word + 1
 
-	// TODO: If previous_line is empty here, we have a single word that exceeds
-	//       the width of the target, so we have to go character-by-character
-	//       to cut it off.
+		while ((start_of_word != <end of string>) && 
+		       (label[start_of_word] is space))
+		{
+		  append char to end of line
+		  ++start_of_word
+		}
+
+	} while ((start_of_word != <end of string>) && 
+	         (label[start_of_word] != '\n') &&
+	         (rendered_line.width < target.width))
+
+	// If previous_line is empty here, we have a single word that exceeds
+	// the width of the target, so we have to go character-by-character
+	// to cut it off.
 	if (previous_line != empty)
 	{
 		do
@@ -45,4 +55,10 @@ while ((start_of_word != <end of string>) &&
 	// Now we have the largest line that will fit onto the target.
 	copy rendered_line onto target
 	++line_number
+	
+	// If start_of_word is at a newline, gobble it up.
+	if (label[start_of_word] == '\n')
+	{
+	  ++start_of_word;
+	}
 }
