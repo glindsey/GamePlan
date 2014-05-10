@@ -2,6 +2,7 @@
 
 #include "App.h"
 
+#include "gui/apparators/ZoomFade.h"
 #include "gui/GUIButton.h"
 #include "gui/GUIEnums.h"
 #include "gui/GUIFont.h"
@@ -26,6 +27,7 @@ AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
                                        GUI::VertAlign::Center});
 
   impl->main_menu_pane->set_title("Test GUI Pane");
+  impl->main_menu_pane->set_apparator(std::make_shared<GUI::Apparators::ZoomFade>());
 
   std::unique_ptr<GUI::Button> test_button;
   test_button.reset(new GUI::Button("test_button", {150, 40},

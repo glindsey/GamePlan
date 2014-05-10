@@ -7771,11 +7771,11 @@
 	"EventHandler.h"
 	"Renderable.h"
 
-1399689808 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
+1399691082 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
 	"GUIControl.h"
 	"ErrorMacros.h"
 	"GUIEnums.h"
-	"IControlApparator.h"
+	"apparators/IControlApparator.h"
 	<boost/format.hpp>
 
 1398997389 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guienums.h
@@ -9064,9 +9064,10 @@
 	"AppStateGameMode.h"
 	"App.h"
 
-1399689610 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
+1399691071 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
 	"AppStateMainMenu.h"
 	"App.h"
+	"gui/apparators/ZoomFade.h"
 	"gui/GUIButton.h"
 	"gui/GUIEnums.h"
 	"gui/GUIFont.h"
@@ -9092,4 +9093,14 @@
 1398999819 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\icontrolapparator.h
 	<SFML/Graphics.hpp>
 	"GUIEnums.h"
+
+1399690987 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\apparators\icontrolapparator.h
+	<SFML/Graphics.hpp>
+	"../GUIEnums.h"
+
+1399690953 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\apparators\zoomfade.cpp
+	"ZoomFade.h"
+
+1399690913 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\apparators\zoomfade.h
+	"IControlApparator.h"
 

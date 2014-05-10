@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "GUIEnums.h"
+#include "../GUIEnums.h"
 
 namespace GUI {
 
@@ -12,7 +12,7 @@ namespace GUI {
 class IControlApparator
 {
   public:
-    virtual ~IControlApparator();
+    virtual ~IControlApparator() {}
 
     virtual void alter_shape(sf::RectangleShape& shape,
                              VisibilityState appear_state,

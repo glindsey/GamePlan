@@ -2,7 +2,7 @@
 
 #include "ErrorMacros.h"
 #include "GUIEnums.h"
-#include "IControlApparator.h"
+#include "apparators/IControlApparator.h"
 
 #include <boost/format.hpp>
 
@@ -251,7 +251,6 @@ Control& Control::must_get_child(std::string const& name) const
 void Control::render(sf::RenderTarget& target, int frame)
 {
   auto& control_texture = *(impl->control_texture.get());
-  auto const& dimensions = get_dimensions();
 
   switch (impl->appear_state)
   {
@@ -311,13 +310,6 @@ void Control::render(sf::RenderTarget& target, int frame)
   }
 
   control_shape.setTexture(&(control_texture.getTexture()), true);
-
-  /*** GSL: This code will be replaced with the apparator lines above ********/
-  control_shape.setSize({dimensions.x * powf(impl->appear_amount, 0.1),
-                         dimensions.y * powf(impl->appear_amount, 0.1)});
-
-  control_shape.setFillColor({255, 255, 255, (unsigned char)(impl->appear_amount * 255.0f)});
-  /***************************************************************************/
 
   /// Adjust position based on control alignment.
   sf::Vector2f child_position = control_shape.getPosition();
