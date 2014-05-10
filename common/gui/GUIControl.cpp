@@ -49,7 +49,7 @@ struct Control::Impl
   std::unique_ptr<sf::RenderTexture> control_texture;
 
   /// Collection of child controls.
-  std::vector<std::shared_ptr<Control>> children;
+  std::vector<std::unique_ptr<Control>> children;
 };
 
 Control::Control(std::string name,
@@ -163,11 +163,16 @@ bool Control::is_mouse_inside() const
   return impl->captured;
 }
 
-bool Control::add_child(std::shared_ptr<Control> new_child)
+void Control::clear_children()
+{
+  impl->children.clear();
+}
+
+bool Control::add_child(std::unique_ptr<Control> new_child)
 {
   ASSERT_CONDITION(new_child);
 
-  for (auto child : impl->children)
+  for (auto& child : impl->children)
   {
     if (child.get() == new_child.get())
     {
@@ -175,70 +180,72 @@ bool Control::add_child(std::shared_ptr<Control> new_child)
     }
   }
 
-  impl->children.push_back(new_child);
   new_child->set_parent(this);
+  impl->children.push_back(std::move(new_child));
   return true;
 }
 
-void Control::must_add_child(std::shared_ptr<Control> new_child)
+void Control::must_add_child(std::unique_ptr<Control> new_child)
 {
-  if (!add_child(new_child))
+  if (!add_child(std::move(new_child)))
   {
     FATAL_ERROR(boost::format("Child \"%1%\" already exists in control \"%2%\"")
                 % new_child->get_name() % get_name());
   }
 }
 
-bool Control::remove_child(std::shared_ptr<Control> old_child)
+std::unique_ptr<Control> Control::remove_child(std::string const& name)
 {
-  ASSERT_CONDITION(old_child);
-
   for (auto iter = std::begin(impl->children);
        iter != std::end(impl->children);
        ++iter)
   {
-    if (iter->get() == old_child.get())
+    if ((*iter)->get_name() == name)
     {
+      auto child = std::move(*iter);
       impl->children.erase(iter);
-      (*iter)->set_parent(nullptr);
-      return true;
-    }
-  }
-  return false;
-}
-
-void Control::must_remove_child(std::shared_ptr<Control> old_child)
-{
-  if (!remove_child(old_child))
-  {
-    FATAL_ERROR(boost::format("Could not remove child \"%1%\" from control \"%2%\"")
-                % old_child->get_name() % get_name());
-  }
-}
-
-std::shared_ptr<Control> Control::get_child(std::string const& name) const
-{
-  for (auto child : impl->children)
-  {
-    if (child->get_name() == name)
-    {
       return child;
     }
   }
-  return std::shared_ptr<Control>();
+  return std::unique_ptr<Control>();
 }
 
-std::shared_ptr<Control> Control::must_get_child(std::string const& name) const
+std::unique_ptr<Control> Control::must_remove_child(std::string const& name)
 {
-  auto found_child = get_child(name);
+  auto child = std::move(remove_child(name));
 
-  if (!found_child)
+  if (!child)
+  {
+    FATAL_ERROR(boost::format("Could not remove child \"%1%\" from control \"%2%\"")
+              % name % get_name());
+  }
+
+  return child;
+}
+
+Control* Control::get_child(std::string const& name) const
+{
+  for (auto& child : impl->children)
+  {
+    if (child->get_name() == name)
+    {
+      return child.get();
+    }
+  }
+  return nullptr;
+}
+
+Control& Control::must_get_child(std::string const& name) const
+{
+  auto child_ptr = get_child(name);
+
+  if (child_ptr == nullptr)
   {
     FATAL_ERROR(boost::format("Could not find child \"%1%\" in control \"%2%\"")
                               % name % get_name());
   }
 
-  return found_child;
+  return *(child_ptr);
 }
 
 void Control::render(sf::RenderTarget& target, int frame)
@@ -279,7 +286,7 @@ void Control::render(sf::RenderTarget& target, int frame)
   _render(control_texture, frame);
 
   // Render each child onto the control texture.
-  for (auto child : impl->children)
+  for (auto& child : impl->children)
   {
     child->render(control_texture, frame);
   }
@@ -384,7 +391,7 @@ EventResult Control::handle_event(sf::Event& event)
   }
 
   // Pass the event down to subclasses.
-  for (auto child : impl->children)
+  for (auto& child : impl->children)
   {
     child->handle_event(event_copy);
   }

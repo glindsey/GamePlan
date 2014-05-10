@@ -13,7 +13,7 @@ struct AppStateMainMenu::Impl
   sf::Text title;
   sf::Text subtitle;
 
-  std::shared_ptr<GUI::Pane> main_menu_pane;
+  std::unique_ptr<GUI::Pane> main_menu_pane;
 };
 
 AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
@@ -27,23 +27,23 @@ AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
 
   impl->main_menu_pane->set_title("Test GUI Pane");
 
-  std::shared_ptr<GUI::Button> test_button;
+  std::unique_ptr<GUI::Button> test_button;
   test_button.reset(new GUI::Button("test_button", {150, 40},
                                     app_->get_default_font()));
   test_button->set_position({0, 0});
   test_button->set_alignment({GUI::HorizAlign::Center,
                               GUI::VertAlign::Center});
   test_button->set_text("Test Button");
-  impl->main_menu_pane->add_child(test_button);
+  impl->main_menu_pane->add_child(std::move(test_button));
 
-  std::shared_ptr<GUI::Label> test_label;
+  std::unique_ptr<GUI::Label> test_label;
   test_label.reset(new GUI::Label("test_label", {500, 100},
                                   app_->get_default_font()));
   test_label->set_position({0, -10});
   test_label->set_alignment({GUI::HorizAlign::Center,
                              GUI::VertAlign::Bottom});
   test_label->set_text("Test Label");
-  impl->main_menu_pane->add_child(test_label);
+  impl->main_menu_pane->add_child(std::move(test_label));
 
   impl->main_menu_pane->set_visible(true);
 }

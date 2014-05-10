@@ -44,14 +44,16 @@ class Control :
 
     bool is_mouse_inside() const;
 
-    bool add_child(std::shared_ptr<Control> new_child);
-    void must_add_child(std::shared_ptr<Control> new_child);
+    void clear_children();
 
-    bool remove_child(std::shared_ptr<Control> new_child);
-    void must_remove_child(std::shared_ptr<Control> new_child);
+    bool add_child(std::unique_ptr<Control> new_child);
+    void must_add_child(std::unique_ptr<Control> new_child);
 
-    std::shared_ptr<Control> get_child(std::string const& name) const;
-    std::shared_ptr<Control> must_get_child(std::string const& name) const;
+    std::unique_ptr<Control> remove_child(std::string const& name);
+    std::unique_ptr<Control> must_remove_child(std::string const& name);
+
+    Control* get_child(std::string const& name) const;
+    Control& must_get_child(std::string const& name) const;
 
     virtual void render(sf::RenderTarget& target, int frame) override final;
 
