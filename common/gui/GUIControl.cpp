@@ -64,6 +64,7 @@ Control::Control(std::string name,
   impl->appear_state = VisibilityState::Visible;
   impl->appear_amount = 1.0f;
   impl->appear_speed = 0.05f;
+  impl->control_texture->setSmooth(true); // good idea?
 }
 
 Control::~Control()

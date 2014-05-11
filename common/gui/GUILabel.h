@@ -36,6 +36,10 @@ class Label :
 
     virtual void _render(sf::RenderTarget& target, int frame) override final;
 
+    void draw_text(sf::RenderTarget& target,
+                   sf::Text& text,
+                   int position_y);
+
   private:
     struct Impl;
     std::unique_ptr<Impl> impl;

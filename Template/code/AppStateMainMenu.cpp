@@ -39,12 +39,12 @@ AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   impl->main_menu_pane->add_child(std::move(test_button));
 
   std::unique_ptr<GUI::Label> test_label;
-  test_label.reset(new GUI::Label("test_label", {500, 100},
+  test_label.reset(new GUI::Label("test_label", {300, 140},
                                   app_->get_default_font()));
   test_label->set_position({0, -10});
   test_label->set_alignment({GUI::HorizAlign::Center,
                              GUI::VertAlign::Bottom});
-  test_label->set_text("Test Label");
+  test_label->set_text("This is a very long label which should be able to test the word-wrapping functionality.  It should wrap without any of the words being cut off. HereIsAReallyLongWordWhichWillBeForciblyCutWhenItGetsTooLong");
   impl->main_menu_pane->add_child(std::move(test_label));
 
   impl->main_menu_pane->set_visible(true);

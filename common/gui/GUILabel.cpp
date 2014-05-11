@@ -84,7 +84,7 @@ void Label::_render(sf::RenderTarget& target, int frame)
   sf::Vector2u dimensions = target.getSize();
   target.clear(sf::Color::Transparent);
 
-  int line_spacing_y = impl->text_font->get_normal_font().getLineSpacing(Settings.text_default_size);
+  int line_spacing_y = impl->text_font->get_normal_font().getLineSpacing(impl->text_size);
 
   // IF there is some text...
   if (!(impl->text_string.isEmpty()))
@@ -108,22 +108,109 @@ void Label::_render(sf::RenderTarget& target, int frame)
       target.draw(rect);
     }
 
-    /// @todo Handle proper line wrapping for labels.
+    int line_number = 0;
+    int lines_that_fit = dimensions.y / line_spacing_y;
 
-    // Draw the text.
-    sf::Text text;
+    sf::String& text = impl->text_string;
+    int end_of_string = text.getSize();
+    int current_character = 0;
+    bool this_char_is_whitespace = false;
+    bool last_char_was_whitespace = false;
+    int start_of_line = 0;
 
-    text.setString(impl->text_string);
-    text.setFont(impl->text_font->get_normal_font());
-    text.setCharacterSize(impl->text_size);
+    int start_of_this_word = 0;
+    int end_of_last_word = 0;
 
-    text.setColor(Settings.text_color);
+    sf::String current_line;
+    sf::String testing_line;
+    sf::Text rendered_line;
+    rendered_line.setFont(impl->text_font->get_normal_font());
+    rendered_line.setCharacterSize(impl->text_size);
+    rendered_line.setColor(Settings.text_color);
 
-    sf::Vector2u texture_size = target.getSize();
+    while ((current_character != end_of_string) &&
+           (line_number < lines_that_fit))
+    {
+      // Remember current character if it is WS or non-WS.
+      last_char_was_whitespace = this_char_is_whitespace;
+      this_char_is_whitespace = isspace(text[current_character]);
+
+      if (!this_char_is_whitespace && last_char_was_whitespace)
+      {
+        start_of_this_word = current_character;
+      }
+      else if (this_char_is_whitespace && !last_char_was_whitespace)
+      {
+        end_of_last_word = current_character - 1;
+      }
+
+      // If at end of string, this char is end of last word.
+      if (current_character == end_of_string - 1)
+      {
+        end_of_last_word = current_character;
+      }
+
+      // Add this character to the testing line.
+      testing_line += text[current_character];
+
+      // Try rendering the testing line.
+      rendered_line.setString(testing_line);
+
+      // If the render does NOT fit, or we've hit the end of the string:
+      if ((rendered_line.getLocalBounds().width > dimensions.x) ||
+          (current_character == end_of_string - 1))
+      {
+        // Handle instance where last word was longer than target width.
+        // In that case, start_of_this_word will equal start_of_line.
+        if (start_of_this_word != start_of_line)
+        {
+          // Back up to the end of the last word.
+          current_character = end_of_last_word + 1;
+        }
+
+        // Copy from start of this line to end of last word into current_line.
+        current_line.clear();
+        for (int index = start_of_line; index < current_character; ++index)
+        {
+          current_line += text[index];
+        }
+
+        // Render it.
+        rendered_line.setString(current_line);
+        draw_text(target, rendered_line, line_number * line_spacing_y);
+
+        // Get ready for the next line: increment past whitespace.
+        while ((isspace(text[current_character])) &&
+               (current_character != end_of_string))
+        {
+          ++current_character;
+        }
+
+        // Clear out testing and current line.
+        testing_line.clear();
+
+        // Set start of new line to current character and increment line number.
+        start_of_line = current_character;
+        ++line_number;
+      } // end if
+      else
+      {
+        // Still fits, so just increment current character.
+        ++current_character;
+      }
+    } // end while
+  } // end if
+}
+
+void Label::draw_text(sf::RenderTarget& target,
+                      sf::Text& text,
+                      int position_y)
+{
     sf::FloatRect text_bounds = text.getGlobalBounds();
 
     sf::Vector2f text_origin;
     sf::Vector2f text_position;
+    sf::Vector2u texture_size = target.getSize();
 
     switch (impl->text_alignment.horiz)
     {
@@ -143,6 +230,11 @@ void Label::_render(sf::RenderTarget& target, int frame)
       break;
     }
 
+    //text_origin.y = text_bounds.top;
+    text_position.y = position_y;
+
+    /// @todo Re-enable vertical text alignment.
+    /*
     switch (impl->text_alignment.vert)
     {
     case VertAlign::Top:
@@ -160,12 +252,12 @@ void Label::_render(sf::RenderTarget& target, int frame)
       text_position.y = texture_size.y;
       break;
     }
+    */
 
     text.setOrigin(text_origin);
     text.setPosition(text_position);
 
     target.draw(text);
-  }
 }
 
 } // end namespace GUI
