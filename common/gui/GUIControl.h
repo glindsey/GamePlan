@@ -18,8 +18,7 @@ class Control :
   public Renderable
 {
   public:
-    Control(std::string name,
-               sf::Vector2f dimensions);
+    Control(std::string name, sf::Vector2f const& dimensions);
     virtual ~Control();
 
     std::string get_name() const;
@@ -28,10 +27,10 @@ class Control :
     bool get_focus();
 
     sf::Vector2f get_position() const;
-    void set_position(sf::Vector2f position);
+    void set_position(sf::Vector2f const& position);
 
     sf::Vector2f get_dimensions() const;
-    void set_dimensions(sf::Vector2f dimensions);
+    void set_dimensions(sf::Vector2f const& dimensions);
 
     Align get_alignment() const;
     void set_alignment(Align alignment);
@@ -66,8 +65,8 @@ class Control :
 
     /// Given parent size, and child size, position and alignment, return
     /// adjusted absolute coordinates.
-    sf::Vector2f get_anchored_position(sf::Vector2f child_position,
-                                       sf::Vector2f child_size) const;
+    sf::Vector2f get_anchored_position(sf::Vector2f const& child_position,
+                                       sf::Vector2f const& child_size) const;
 
     /// Template method for updating the control's appearance.
     /// This is used by any subclass that wishes to cache the rendered

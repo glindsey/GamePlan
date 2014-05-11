@@ -209,3 +209,8 @@ StateMachine& App::get_state_machine()
 {
   return *(impl->state_machine.get());
 }
+
+sf::RenderWindow& App::get_main_window()
+{
+  return *(impl->app_window.get());
+}

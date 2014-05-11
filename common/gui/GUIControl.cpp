@@ -53,7 +53,7 @@ struct Control::Impl
 };
 
 Control::Control(std::string name,
-                 sf::Vector2f dimensions)
+                 sf::Vector2f const& dimensions)
   : impl(new Impl())
 {
   impl->parent = nullptr;
@@ -93,7 +93,7 @@ sf::Vector2f Control::get_position() const
   return impl->position;
 }
 
-void Control::set_position(sf::Vector2f position)
+void Control::set_position(sf::Vector2f const& position)
 {
   impl->position = position;
   _update_appearance();
@@ -104,7 +104,7 @@ sf::Vector2f Control::get_dimensions() const
   return impl->dimensions;
 }
 
-void Control::set_dimensions(sf::Vector2f dimensions)
+void Control::set_dimensions(sf::Vector2f const& dimensions)
 {
   impl->dimensions = dimensions;
   impl->control_texture.reset(new sf::RenderTexture());
@@ -407,8 +407,8 @@ void Control::set_instant_visibility(bool visible)
   }
 }
 
-sf::Vector2f Control::get_anchored_position(sf::Vector2f child_position,
-                                            sf::Vector2f child_size) const
+sf::Vector2f Control::get_anchored_position(sf::Vector2f const& child_position,
+                                            sf::Vector2f const& child_size) const
 {
   if (impl->parent == nullptr)
   {

@@ -33,6 +33,8 @@ class App : public EventHandler, public boost::noncopyable
 
     std::shared_ptr<GUI::Font> get_default_font();
 
+    sf::RenderWindow& get_main_window();
+
   protected:
     StateMachine& get_state_machine();
 

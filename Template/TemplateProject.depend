@@ -4585,7 +4585,7 @@
 	<vector>
 	"GUIControl.h"
 
-1398998175 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\app.cpp
+1399776275 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\app.cpp
 	"App.h"
 	<boost/random/uniform_int_distribution.hpp>
 	<ctime>
@@ -4599,7 +4599,7 @@
 	"StateMachine.h"
 	"TextureAtlas.h"
 
-1398998152 c:\gdrive\hobby\gamedev\projects\gameplan\common\app.h
+1399776951 c:\gdrive\hobby\gamedev\projects\gameplan\common\app.h
 	<boost/noncopyable.hpp>
 	<boost/random/mersenne_twister.hpp>
 	<memory>
@@ -7765,13 +7765,13 @@
 	<vector>
 	"GUIControl.h"
 
-1399689741 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
+1399776648 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
 	<SFML/Graphics.hpp>
 	<memory>
 	"EventHandler.h"
 	"Renderable.h"
 
-1399691736 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
+1399776696 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
 	"GUIControl.h"
 	"ErrorMacros.h"
 	"GUIEnums.h"
@@ -7785,7 +7785,7 @@
 	<SFML/Graphics.hpp>
 	<memory>
 
-1399775075 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.cpp
+1399775445 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guilabel.cpp
 	"gui/GUILabel.h"
 	"App.h"
 	"ConfigSettings.h"
@@ -7811,10 +7811,11 @@
 	"GUIControl.h"
 	"GUIEnums.h"
 
-1398997991 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.cpp
+1399777120 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.cpp
 	"GUIRoot.h"
 
-1398997546 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.h
+1399776377 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guiroot.h
+	<SFML/Graphics.hpp>
 	"GUIControl.h"
 
 1396719513 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\state.cpp
@@ -9064,7 +9065,7 @@
 	"AppStateGameMode.h"
 	"App.h"
 
-1399775147 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
+1399777066 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
 	"AppStateMainMenu.h"
 	"App.h"
 	"gui/apparators/ZoomFade.h"
@@ -9073,6 +9074,7 @@
 	"gui/GUIFont.h"
 	"gui/GUILabel.h"
 	"gui/GUIPane.h"
+	"gui/GUIRoot.h"
 
 1397611665 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatesplashscreen.cpp
 	"AppStateSplashScreen.h"

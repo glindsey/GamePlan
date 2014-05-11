@@ -1,6 +1,8 @@
 #ifndef GUIROOT_H
 #define GUIROOT_H
 
+#include <SFML/Graphics.hpp>
+
 #include "GUIControl.h"
 
 namespace GUI {
@@ -8,8 +10,7 @@ namespace GUI {
 class Root : public Control
 {
   public:
-    Root(std::string name,
-         sf::Vector2f dimensions);
+    Root(sf::RenderWindow const& window);
     virtual ~Root();
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;

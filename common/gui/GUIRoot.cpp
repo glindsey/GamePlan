@@ -2,9 +2,9 @@
 
 namespace GUI {
 
-Root::Root(std::string name,
-           sf::Vector2f dimensions)
-  : Control(name, dimensions)
+Root::Root(sf::RenderWindow const& window)
+  : Control("root", { static_cast<float>(window.getSize().x),
+                      static_cast<float>(window.getSize().y) })
 {
   //ctor
 }
@@ -18,12 +18,29 @@ Root::~Root()
 
 EventResult Root::_handle_event(sf::Event& event)
 {
-  return EventResult::Ignored;
+
+  EventResult result = EventResult::Ignored;
+
+  switch (event.type)
+  {
+  case sf::Event::EventType::Resized:
+    {
+      this->set_dimensions({ static_cast<float>(event.size.width),
+                             static_cast<float>(event.size.height) });
+      break;
+    }
+
+  default:
+    break;
+  }
+
+  return result;
 }
 
 void Root::_render(sf::RenderTarget& target, int frame)
 {
-  /// Implementation does nothing.
+  /// @todo Get rid of magic constant.
+  target.clear(sf::Color(16, 16, 32, 255));
 }
 
 } // end namespace GUI
