@@ -109,6 +109,8 @@ void Control::set_dimensions(sf::Vector2f const& dimensions)
   impl->dimensions = dimensions;
   impl->control_texture.reset(new sf::RenderTexture());
   impl->control_texture->create(dimensions.x, dimensions.y);
+
+  _set_dimensions(dimensions);
   _update_appearance();
 }
 
@@ -451,6 +453,11 @@ sf::Vector2f Control::get_anchored_position(sf::Vector2f const& child_position,
 }
 
 void Control::_update_appearance()
+{
+  /* The default implementation of this method does nothing. */
+}
+
+void Control::_set_dimensions(sf::Vector2f const& dimensions)
 {
   /* The default implementation of this method does nothing. */
 }

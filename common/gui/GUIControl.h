@@ -77,6 +77,13 @@ class Control :
     /// The default implementation of this method does nothing.
     virtual void _update_appearance();
 
+    /// Template method called when a control is resized.
+    /// This is used by subclasses if they need new size information
+    /// right away -- for example, to resize a separate texture.
+    ///
+    /// The default implementation of this method does nothing.
+    virtual void _set_dimensions(sf::Vector2f const& dimensions);
+
     /// Template method for rendering the control. Pure virtual in GUIControl.
     /// @param target Target to render to.
     /// @param frame Animation frame to render.

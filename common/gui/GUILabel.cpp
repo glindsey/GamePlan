@@ -20,6 +20,11 @@ struct Label::Impl
   /// Text alignment.
   Align text_alignment;
 
+  /// Texture to cache rendered appearance.
+  std::unique_ptr<sf::RenderTexture> cached_texture;
+
+  /// Shape used to draw texture onto.
+  std::unique_ptr<sf::RectangleShape> cached_shape;
 };
 
 Label::Label(std::string name,
@@ -31,6 +36,7 @@ Label::Label(std::string name,
   impl->text_font = text_font;
   impl->text_size = Settings.text_default_size;
   impl->text_alignment = {HorizAlign::Left, VertAlign::Top};
+  _set_dimensions(dimensions);
 }
 
 Label::~Label()
@@ -79,8 +85,19 @@ EventResult Label::_handle_event(sf::Event& event)
   return EventResult::Ignored;
 }
 
-void Label::_render(sf::RenderTarget& target, int frame)
+void Label::_set_dimensions(sf::Vector2f const& dimensions)
 {
+  impl->cached_texture.reset(new sf::RenderTexture());
+  impl->cached_texture->create(dimensions.x, dimensions.y);
+  impl->cached_shape.reset(new sf::RectangleShape());
+  impl->cached_shape->setFillColor(sf::Color::Red);
+  impl->cached_shape->setSize(dimensions);
+  impl->cached_shape->setTexture(&(impl->cached_texture->getTexture()), true);
+}
+
+void Label::_update_appearance()
+{
+  sf::RenderTexture& target = *(impl->cached_texture.get());
   sf::Vector2u dimensions = target.getSize();
   target.clear(sf::Color::Transparent);
 
@@ -99,7 +116,7 @@ void Label::_render(sf::RenderTarget& target, int frame)
 
       rect.setFillColor(sf::Color::Transparent);
       rect.setOutlineColor(Settings.debug_control_borders ?
-                           sf::Color::Black :
+                           sf::Color::White :
                            sf::Color::Transparent);
       rect.setOutlineThickness(1);
       rect.setPosition(sf::Vector2f(1, 1));
@@ -126,7 +143,7 @@ void Label::_render(sf::RenderTarget& target, int frame)
     sf::Text rendered_line;
     rendered_line.setFont(impl->text_font->get_normal_font());
     rendered_line.setCharacterSize(impl->text_size);
-    rendered_line.setColor(Settings.text_color);
+    rendered_line.setColor(sf::Color::White);
 
     while ((current_character != end_of_string) &&
            (line_number < lines_that_fit))
@@ -200,6 +217,14 @@ void Label::_render(sf::RenderTarget& target, int frame)
       }
     } // end while
   } // end if
+
+  target.display();
+}
+
+/// @todo Move rendering code into _update_appearance so it isn't horribly slow.
+void Label::_render(sf::RenderTarget& target, int frame)
+{
+  target.draw(*(impl->cached_shape.get()), sf::BlendNone);
 }
 
 void Label::draw_text(sf::RenderTarget& target,
@@ -215,7 +240,7 @@ void Label::draw_text(sf::RenderTarget& target,
     switch (impl->text_alignment.horiz)
     {
     case HorizAlign::Left:
-      text_origin.x = text_bounds.left;
+      text_origin.x = 0;
       text_position.x = 0;
       break;
 
@@ -230,7 +255,7 @@ void Label::draw_text(sf::RenderTarget& target,
       break;
     }
 
-    //text_origin.y = text_bounds.top;
+    text_origin.y = 0;
     text_position.y = position_y;
 
     /// @todo Re-enable vertical text alignment.

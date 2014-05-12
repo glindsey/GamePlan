@@ -34,6 +34,10 @@ class Label :
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;
 
+    virtual void _set_dimensions(sf::Vector2f const& dimensions) override;
+
+    virtual void _update_appearance() override;
+
     virtual void _render(sf::RenderTarget& target, int frame) override final;
 
     void draw_text(sf::RenderTarget& target,
