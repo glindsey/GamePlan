@@ -13,6 +13,7 @@ namespace GUI {
 // Forward declarations
 class Font;
 
+/// Class representing a simple image displayed on the screen.
 class Image :
   public Control
 {
@@ -30,7 +31,7 @@ class Image :
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;
 
-    virtual bool _render(sf::RenderTarget& target,
+    virtual void _render(sf::RenderTarget& target,
                          sf::FloatRect adjusted_dims,
                          int frame) override final;
 

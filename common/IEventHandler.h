@@ -1,5 +1,5 @@
-#ifndef EVENTHANDLER_H
-#define EVENTHANDLER_H
+#ifndef IEVENTHANDLER_H
+#define IEVENTHANDLER_H
 
 #include <boost/noncopyable.hpp>
 #include <SFML/Graphics.hpp>
@@ -14,14 +14,14 @@ enum EventResult
 };
 
 // Interface class indicating that an object handles SFML events.
-class EventHandler
+class IEventHandler
 {
   public:
-    virtual ~EventHandler() {}
+    virtual ~IEventHandler() {}
     virtual EventResult handle_event(sf::Event& event) = 0;
 
   protected:
   private:
 };
 
-#endif // EVENTHANDLER_H
+#endif // IEVENTHANDLER_H

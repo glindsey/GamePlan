@@ -5,8 +5,8 @@
 #include <boost/scoped_ptr.hpp>
 #include <string>
 
-#include "EventHandler.h"
-#include "Renderable.h"
+#include "IEventHandler.h"
+#include "IRenderable.h"
 
 // Forward declarations
 class State;
@@ -14,8 +14,8 @@ class State;
 // Implementation of a state machine that can change between states derived
 // from the State abstract class.
 class StateMachine :
-  virtual public EventHandler,
-  virtual public Renderable,
+  virtual public IEventHandler,
+  virtual public IRenderable,
   virtual public boost::noncopyable
 {
   public:

@@ -1,16 +1,16 @@
-#ifndef RENDERABLE_H
-#define RENDERABLE_H
+#ifndef IRENDERABLE_H
+#define IRENDERABLE_H
 
 #include <SFML/Graphics.hpp>
 
 // Interface for a class that can be rendered to a target.
-class Renderable
+class IRenderable
 {
   public:
-    virtual ~Renderable() {}
+    virtual ~IRenderable() {}
     virtual void render(sf::RenderTarget& target, int frame) = 0;
   protected:
   private:
 };
 
-#endif // RENDERABLE_H
+#endif // IRENDERABLE_H

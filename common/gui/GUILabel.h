@@ -13,6 +13,7 @@ namespace GUI {
 // Forward declarations
 class Font;
 
+/// Class representing a text label.
 class Label :
   public Control
 {
@@ -30,6 +31,12 @@ class Label :
 
     void set_text_alignment(Align alignment);
     Align get_text_alignment() const;
+
+    void set_cursor_visible(bool visible);
+    bool is_cursor_visible();
+
+    unsigned long get_cursor_location();
+    void set_cursor_location(unsigned long location);
 
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;

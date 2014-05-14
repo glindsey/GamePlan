@@ -18,8 +18,8 @@ class Button :
 {
   public:
     Button(std::string name,
-            sf::Vector2f dimensions,
-            std::shared_ptr<Font> text_font);
+           sf::Vector2f dimensions,
+           std::shared_ptr<Font> text_font);
     virtual ~Button();
 
     void set_text(sf::String str);

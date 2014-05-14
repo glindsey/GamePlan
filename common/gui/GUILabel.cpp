@@ -25,6 +25,12 @@ struct Label::Impl
 
   /// Shape used to draw texture onto.
   std::unique_ptr<sf::RectangleShape> cached_shape;
+
+  /// Cursor visibility.
+  bool cursor_visible;
+
+  /// Cursor location.
+  unsigned long cursor_location;
 };
 
 Label::Label(std::string name,
@@ -77,6 +83,32 @@ Align Label::get_text_alignment() const
   return impl->text_alignment;
 }
 
+bool Label::is_cursor_visible()
+{
+  return impl->cursor_visible;
+}
+
+void Label::set_cursor_visible(bool visible)
+{
+  impl->cursor_visible = visible;
+  _update_appearance();
+}
+
+unsigned long Label::get_cursor_location()
+{
+  return impl->cursor_location;
+}
+
+void Label::set_cursor_location(unsigned long location)
+{
+  if (impl->cursor_location > impl->text_string.getSize())
+  {
+    impl->cursor_location = impl->text_string.getSize();
+  }
+
+  impl->cursor_location = location;
+}
+
 
 // === PROTECTED METHODS ======================================================
 
@@ -90,13 +122,17 @@ void Label::_set_dimensions(sf::Vector2f const& dimensions)
   impl->cached_texture.reset(new sf::RenderTexture());
   impl->cached_texture->create(dimensions.x, dimensions.y);
   impl->cached_shape.reset(new sf::RectangleShape());
-  impl->cached_shape->setFillColor(sf::Color::Red);
+  impl->cached_shape->setFillColor(Settings.text_color);
   impl->cached_shape->setSize(dimensions);
   impl->cached_shape->setTexture(&(impl->cached_texture->getTexture()), true);
 }
 
 void Label::_update_appearance()
 {
+  /// @todo Render a cursor if one is visible.
+  ///       (Doing this in _update_appearance() means it can't be blinking
+  ///        or otherwise animated, but it does simplify matters a bit.)
+
   sf::RenderTexture& target = *(impl->cached_texture.get());
   sf::Vector2u dimensions = target.getSize();
   target.clear(sf::Color::Transparent);
@@ -221,7 +257,6 @@ void Label::_update_appearance()
   target.display();
 }
 
-/// @todo Move rendering code into _update_appearance so it isn't horribly slow.
 void Label::_render(sf::RenderTarget& target, int frame)
 {
   target.draw(*(impl->cached_shape.get()), sf::BlendNone);

@@ -31,7 +31,7 @@ class Pane :
   protected:
     virtual EventResult _handle_event(sf::Event& event) override;
 
-    virtual void _render(sf::RenderTarget& target, int frame) override final;
+    virtual void _render(sf::RenderTarget& target, int frame) override;
     virtual void _render_contents(sf::RenderTarget& target, int frame);
 
   private:

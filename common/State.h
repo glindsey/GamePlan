@@ -5,14 +5,14 @@
 #include <memory>
 #include <string>
 
-#include "EventHandler.h"
-#include "Renderable.h"
+#include "IEventHandler.h"
+#include "IRenderable.h"
 
 // Forward declarations
 class StateMachine;
 
-class State : public EventHandler,
-              public Renderable,
+class State : public IEventHandler,
+              public IRenderable,
               public boost::noncopyable
 {
   public:

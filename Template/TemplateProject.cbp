@@ -76,10 +76,10 @@
 		<Unit filename="../common/Direction.h" />
 		<Unit filename="../common/ErrorMacros.cpp" />
 		<Unit filename="../common/ErrorMacros.h" />
-		<Unit filename="../common/EventHandler.h" />
 		<Unit filename="../common/GeoVector.h" />
 		<Unit filename="../common/GetLetterKey.h" />
-		<Unit filename="../common/Renderable.h" />
+		<Unit filename="../common/IEventHandler.h" />
+		<Unit filename="../common/IRenderable.h" />
 		<Unit filename="../common/State.cpp" />
 		<Unit filename="../common/State.h" />
 		<Unit filename="../common/StateMachine.cpp" />
@@ -99,6 +99,10 @@
 		<Unit filename="../common/gui/GUIImage.h" />
 		<Unit filename="../common/gui/GUILabel.cpp" />
 		<Unit filename="../common/gui/GUILabel.h" />
+		<Unit filename="../common/gui/GUIMenu.cpp" />
+		<Unit filename="../common/gui/GUIMenu.h" />
+		<Unit filename="../common/gui/GUIMenuItem.cpp" />
+		<Unit filename="../common/gui/GUIMenuItem.h" />
 		<Unit filename="../common/gui/GUIPane.cpp" />
 		<Unit filename="../common/gui/GUIPane.h" />
 		<Unit filename="../common/gui/GUIRoot.cpp" />
@@ -124,6 +128,15 @@
 			<envvars />
 			<debugger />
 			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="2" line="2" />
+				<doxyfile_project output_directory="docs" />
+				<doxyfile_build extract_all="1" />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot class_diagrams="1" have_dot="1" />
+				<general use_at_in_tags="1" />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

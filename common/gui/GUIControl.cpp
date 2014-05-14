@@ -462,6 +462,12 @@ void Control::_set_dimensions(sf::Vector2f const& dimensions)
   /* The default implementation of this method does nothing. */
 }
 
+std::vector<std::unique_ptr<Control>>& Control::get_child_controls()
+{
+  return impl->children;
+}
+
+
 // === PRIVATE METHODS ========================================================
 void Control::set_parent(Control* parent)
 {

@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-#include "EventHandler.h"
-#include "Renderable.h"
+#include "IEventHandler.h"
+#include "IRenderable.h"
 
 namespace GUI {
 
@@ -14,8 +14,8 @@ class Align;
 class IControlApparator;
 
 class Control :
-  public EventHandler,
-  public Renderable
+  public IEventHandler,
+  public IRenderable
 {
   public:
     Control(std::string name, sf::Vector2f const& dimensions);
@@ -60,7 +60,7 @@ class Control :
 
   protected:
     /// Set instantaneous visibility.
-    /// @param visibility False to hide the control, True to show it.
+    /// @param visible False to hide the control, True to show it.
     void set_instant_visibility(bool visible);
 
     /// Given parent size, and child size, position and alignment, return
@@ -83,6 +83,11 @@ class Control :
     ///
     /// The default implementation of this method does nothing.
     virtual void _set_dimensions(sf::Vector2f const& dimensions);
+
+    /// Return the vector of child controls.
+    /// @note I probably shouldn't be exposing class internals this way,
+    ///       and might get rid of this in the future if I can do without it.
+    virtual std::vector<std::unique_ptr<Control>>& get_child_controls();
 
     /// Template method for rendering the control. Pure virtual in GUIControl.
     /// @param target Target to render to.

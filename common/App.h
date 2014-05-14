@@ -6,7 +6,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
-#include "EventHandler.h"
+#include "IEventHandler.h"
 
 // Forward declarations
 namespace GUI
@@ -17,7 +17,7 @@ class MessageLog;
 class StateMachine;
 class TileSheet;
 
-class App : public EventHandler, public boost::noncopyable
+class App : public IEventHandler, public boost::noncopyable
 {
   public:
     App(std::string name);
