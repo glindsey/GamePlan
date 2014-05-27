@@ -1,14 +1,20 @@
 #include "AppStateMainMenu.h"
 
+#include <functional>
+
 #include "App.h"
+#include "ErrorMacros.h"
 
 #include "gui/apparators/ZoomFade.h"
 #include "gui/GUIButton.h"
 #include "gui/GUIEnums.h"
 #include "gui/GUIFont.h"
 #include "gui/GUILabel.h"
+#include "gui/GUIMenu.h"
 #include "gui/GUIPane.h"
 #include "gui/GUIRoot.h"
+
+using std::placeholders::_1;
 
 struct AppStateMainMenu::Impl
 {
@@ -21,25 +27,29 @@ struct AppStateMainMenu::Impl
 AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   : State(state_machine), impl(new Impl())
 {
+  auto apparatorZoom = std::make_shared<GUI::Apparators::ZoomFade>();
+
   impl->gui_root.reset(new GUI::Root(app_->get_main_window()));
 
-  std::unique_ptr<GUI::Pane> main_menu_pane;
-  main_menu_pane.reset(new GUI::Pane("main_menu_pane", {600, 400},
+  std::unique_ptr<GUI::Pane> control_test_pane;
+  control_test_pane.reset(new GUI::Pane("control_test_pane", {800, 600},
                                            app_->get_default_font()));
-  main_menu_pane->set_position({0, 100});
-  main_menu_pane->set_alignment({GUI::HorizAlign::Center,
+  control_test_pane->set_position({0, 0});
+  control_test_pane->set_alignment({GUI::HorizAlign::Left,
                                        GUI::VertAlign::Top});
 
-  main_menu_pane->set_title("Test GUI Pane");
-  main_menu_pane->set_apparator(std::make_shared<GUI::Apparators::ZoomFade>());
+  control_test_pane->set_title("Test GUI Pane");
+  control_test_pane->set_apparator(apparatorZoom);
 
   std::unique_ptr<GUI::Button> test_button;
   test_button.reset(new GUI::Button("test_button", {150, 40},
                                     app_->get_default_font()));
-  test_button->set_position({0, 0});
-  test_button->set_alignment({GUI::HorizAlign::Center,
-                              GUI::VertAlign::Center});
+  test_button->set_position({-25, 50});
+  test_button->set_alignment({GUI::HorizAlign::Right,
+                              GUI::VertAlign::Top});
   test_button->set_text("Test Button");
+  auto click_callback = std::bind(&AppStateMainMenu::do_button_clicked, this);
+  test_button->set_callback_clicked(click_callback);
 
   std::unique_ptr<GUI::Label> test_label;
   test_label.reset(new GUI::Label("test_label", {300, 140},
@@ -47,13 +57,30 @@ AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   test_label->set_position({0, -10});
   test_label->set_alignment({GUI::HorizAlign::Center,
                              GUI::VertAlign::Bottom});
-  test_label->set_text("This is a very long label which should be able to test the word-wrapping functionality.  It should wrap without any of the words being cut off. HereIsAReallyLongWordWhichWillBeForciblyCutWhenItGetsTooLong");
+  test_label->set_text("This is a very long label which should be able to test "
+                       "the word-wrapping functionality.  It should wrap "
+                       "without any of the words being cut off. "
+                       "HereIsAReallyLongWordWhichWillBeForciblyCutWhenItGetsTooLong");
 
-  main_menu_pane->add_child(std::move(test_button));
-  main_menu_pane->add_child(std::move(test_label));
-  main_menu_pane->set_visible(true);
+  std::unique_ptr<GUI::Menu> test_menu;
+  test_menu.reset(new GUI::Menu("test_menu", {250, 360},
+                                app_->get_default_font(),
+                                GUI::Orientation::Vertical));
 
-  impl->gui_root->add_child(std::move(main_menu_pane));
+  test_menu->set_position({0, -50});
+  test_menu->set_alignment({GUI::HorizAlign::Center,
+                                 GUI::VertAlign::Center});
+  test_menu->set_apparator(apparatorZoom);
+  test_menu->set_visible(true);
+
+
+  control_test_pane->add_child(std::move(test_button));
+  control_test_pane->add_child(std::move(test_label));
+  control_test_pane->add_child(std::move(test_menu));
+
+  control_test_pane->set_visible(true);
+
+  impl->gui_root->add_child(std::move(control_test_pane));
 
 }
 
@@ -129,4 +156,9 @@ bool AppStateMainMenu::initialize()
 bool AppStateMainMenu::terminate()
 {
   return true;
+}
+
+void AppStateMainMenu::do_button_clicked()
+{
+  TRACE("Button has been clicked");
 }

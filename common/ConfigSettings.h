@@ -17,11 +17,16 @@ class ConfigSettings
     static ConfigSettings& instance();
 
     bool debug_control_borders;             ///< If true, borders are drawn around borderless controls.
-    sf::Color window_border_color;          ///< Window border color.
-    sf::Color window_focused_border_color;  ///< Focused window border color.
-    sf::Color window_bg_color;              ///< Window background color.
-    sf::Color window_focused_bg_color;      ///< Focused window bg color.
-    float window_border_width;              ///< Window border width.
+    sf::Color pane_border_color;            ///< Pane border color.
+    sf::Color pane_focused_border_color;    ///< Focused pane border color.
+    sf::Color pane_bg_color;                ///< Pane background color.
+    sf::Color pane_focused_bg_color;        ///< Focused pane bg color.
+    float pane_border_width;                ///< Pane border width.
+    sf::Color menu_border_color;            ///< Menu border color.
+    sf::Color menu_focused_border_color;    ///< Focused menu border color.
+    sf::Color menu_bg_color;                ///< Menu background color.
+    sf::Color menu_focused_bg_color;        ///< Focused menu bg color.
+    float menu_border_width;                ///< Menu border width.
     sf::Color button_focused_border_color;  ///< Button focused border color.
     sf::Color button_border_bl_color;       ///< Button border color, bottom/left.
     sf::Color button_border_tr_color;       ///< Button border color, top/right.

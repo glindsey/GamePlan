@@ -8,19 +8,21 @@
 #include "GUIEnums.h"
 #include "GUISlider.h"
 
-// Forward declarations
-class GUIFont;
+namespace GUI {
 
-class GUIScrollBar :
-  public GUISlider
+// Forward declarations
+class Font;
+
+class ScrollBar :
+  public Slider
 {
   public:
-    GUIScrollBar(std::string name,
-                 sf::FloatRect dimensions,
-                 std::pair<long int> extents,
-                 double handle_size = 0.1,
-                 GUIOrientation orientation = GUIOrientation::Horizontal);
-    virtual ~GUIScrollBar();
+    ScrollBar(std::string name,
+              sf::FloatRect dimensions,
+              std::pair<long int> extents,
+              double handle_size = 0.1,
+              Orientation orientation = Orientation::Horizontal);
+    virtual ~ScrollBar();
 
     /// Set the size of the scrollbar handle.
     /// @param handle_size  Size of the handle in relation to the total range
@@ -57,5 +59,7 @@ class GUIScrollBar :
     struct Impl;
     std::unique_ptr<Impl> impl;
 };
+
+} // end namespace GUI
 
 #endif // GUILABEL_H

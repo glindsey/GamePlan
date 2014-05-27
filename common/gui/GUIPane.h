@@ -28,7 +28,12 @@ class Pane :
     void set_title_alignment(HorizAlign alignment);
     HorizAlign get_title_alignment() const;
 
+    void set_title_font(std::shared_ptr<Font> title_font);
+    std::shared_ptr<Font> get_title_font() const;
+
   protected:
+    Font& get_title_font_ref();
+
     virtual EventResult _handle_event(sf::Event& event) override;
 
     virtual void _render(sf::RenderTarget& target, int frame) override;

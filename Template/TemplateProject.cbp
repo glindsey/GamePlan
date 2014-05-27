@@ -107,6 +107,7 @@
 		<Unit filename="../common/gui/GUIPane.h" />
 		<Unit filename="../common/gui/GUIRoot.cpp" />
 		<Unit filename="../common/gui/GUIRoot.h" />
+		<Unit filename="../common/gui/GUIScrollBar.h" />
 		<Unit filename="../common/gui/GUISlider.h" />
 		<Unit filename="../common/gui/apparators/IControlApparator.h" />
 		<Unit filename="../common/gui/apparators/ZoomFade.cpp" />

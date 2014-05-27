@@ -114,6 +114,9 @@ EventResult Button::_handle_event(sf::Event& event)
         if (impl->callback_pressed)
         {
           impl->callback_pressed(false);
+        }
+        if (impl->callback_clicked)
+        {
           impl->callback_clicked();
         }
       }

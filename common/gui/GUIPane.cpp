@@ -2,6 +2,7 @@
 
 #include "App.h"
 #include "ConfigSettings.h"
+#include "ErrorMacros.h"
 #include "GUIFont.h"
 
 namespace GUI {
@@ -27,6 +28,8 @@ Pane::Pane(std::string name,
   : Control(name, dimensions),
     impl(new Impl())
 {
+  ASSERT_CONDITION(title_font);
+
   impl->title_font = title_font;
   impl->title_alignment = HorizAlign::Center;
 
@@ -59,7 +62,24 @@ HorizAlign Pane::get_title_alignment() const
   return impl->title_alignment;
 }
 
+void Pane::set_title_font(std::shared_ptr<Font> title_font)
+{
+  ASSERT_CONDITION(title_font);
+
+  impl->title_font = title_font;
+}
+
+std::shared_ptr<Font> Pane::get_title_font() const
+{
+  return impl->title_font;
+}
+
 // === PROTECTED METHODS ======================================================
+
+Font& Pane::get_title_font_ref()
+{
+  return *(impl->title_font.get());
+}
 
 EventResult Pane::_handle_event(sf::Event& event)
 {
@@ -80,7 +100,9 @@ void Pane::_render(sf::RenderTarget& target, int frame)
 
   bg_shape.setSize({dimensions.x, dimensions.y});
   bg_shape.setPosition({0, 0});
-  bg_shape.setFillColor(Settings.window_bg_color);
+  bg_shape.setFillColor(get_focus() ?
+                        Settings.pane_focused_bg_color :
+                        Settings.pane_bg_color);
   target.draw(bg_shape);
 
   // Call the possibly-overridden render_contents.
@@ -91,17 +113,17 @@ void Pane::_render(sf::RenderTarget& target, int frame)
   // IF the pane has a title...
   if (!(impl->title_string.isEmpty()))
   {
-    // Draw the title in the upper-left corner.
+    // Draw the title at the top.
     sf::RectangleShape title_rect;
     sf::Text title_text;
 
     title_rect.setFillColor(get_focus() ?
-                            Settings.window_focused_border_color :
-                            Settings.window_border_color);
+                            Settings.pane_focused_border_color :
+                            Settings.pane_border_color);
     title_rect.setOutlineColor(get_focus() ?
-                               Settings.window_focused_border_color :
-                               Settings.window_border_color);
-    title_rect.setOutlineThickness(Settings.window_border_width);
+                               Settings.pane_focused_border_color :
+                               Settings.pane_border_color);
+    title_rect.setOutlineThickness(Settings.pane_border_width);
     title_rect.setPosition(sf::Vector2f(0, 0));
     title_rect.setSize(sf::Vector2f(dimensions.x,
                                     title_height + (text_margin.y * 2)));
@@ -112,7 +134,7 @@ void Pane::_render(sf::RenderTarget& target, int frame)
     title_text.setFont(impl->title_font->get_bold_font());
     title_text.setCharacterSize(Settings.text_title_size);
 
-    title_text.setColor(Settings.window_bg_color);
+    title_text.setColor(Settings.pane_bg_color);
 
     sf::FloatRect rect_bounds = title_rect.getGlobalBounds();
     sf::FloatRect text_bounds = title_text.getGlobalBounds();
@@ -128,7 +150,7 @@ void Pane::_render(sf::RenderTarget& target, int frame)
     case HorizAlign::Left:
       text_origin.x = text_bounds.left;
       text_position.x = rect_bounds.left +
-                        (text_margin.x + Settings.window_border_width);
+                        (text_margin.x + Settings.pane_border_width);
       break;
 
     case HorizAlign::Center:
@@ -139,7 +161,7 @@ void Pane::_render(sf::RenderTarget& target, int frame)
     case HorizAlign::Right:
       text_origin.x = text_bounds.left + text_bounds.width;
       text_position.x = (rect_bounds.left + rect_bounds.width) -
-                        (text_margin.x + Settings.window_border_width);
+                        (text_margin.x + Settings.pane_border_width);
       break;
     }
     title_text.setOrigin(text_origin);
@@ -151,15 +173,15 @@ void Pane::_render(sf::RenderTarget& target, int frame)
   // Draw the border.
   sf::RectangleShape border_shape;
 
-  border_shape.setSize({dimensions.x - (Settings.window_border_width * 2),
-                        dimensions.y - (Settings.window_border_width * 2)});
-  border_shape.setPosition({Settings.window_border_width,
-                            Settings.window_border_width});
+  border_shape.setSize({dimensions.x - (Settings.pane_border_width * 2),
+                        dimensions.y - (Settings.pane_border_width * 2)});
+  border_shape.setPosition({Settings.pane_border_width,
+                            Settings.pane_border_width});
   border_shape.setFillColor(sf::Color::Transparent);
   border_shape.setOutlineColor(get_focus() ?
-                               Settings.window_focused_border_color :
-                               Settings.window_border_color);
-  border_shape.setOutlineThickness(Settings.window_border_width);
+                               Settings.pane_focused_border_color :
+                               Settings.pane_border_color);
+  border_shape.setOutlineThickness(Settings.pane_border_width);
   target.draw(border_shape);
 }
 

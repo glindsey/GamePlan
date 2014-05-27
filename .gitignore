@@ -1,4 +1,10 @@
 #################
+## Doxygen
+#################
+
+html/
+
+#################
 ## Eclipse
 #################
 
@@ -149,7 +155,7 @@ ClientBin/
 *.[Pp]ublish.xml
 *.pfx
 *.publishsettings
-html/
+ html/
 
 # RIA/Silverlight projects
 Generated_Code/

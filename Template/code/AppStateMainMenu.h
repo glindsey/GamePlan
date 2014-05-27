@@ -12,12 +12,14 @@ class AppStateMainMenu : public State
     AppStateMainMenu(StateMachine* state_machine);
     virtual ~AppStateMainMenu();
 
-    void execute() override;
-    void render(sf::RenderTarget& target, int frame) override;
-    EventResult handle_event(sf::Event& event) override;
-    std::string const& get_name() override;
-    bool initialize() override;
-    bool terminate() override;
+    virtual void execute() override;
+    virtual void render(sf::RenderTarget& target, int frame) override;
+    virtual EventResult handle_event(sf::Event& event) override;
+    virtual std::string const& get_name() override;
+    virtual bool initialize() override;
+    virtual bool terminate() override;
+
+    void do_button_clicked();
 
   protected:
   private:

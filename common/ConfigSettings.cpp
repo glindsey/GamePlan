@@ -4,12 +4,17 @@ std::unique_ptr<ConfigSettings> ConfigSettings::instance_;
 
 ConfigSettings::ConfigSettings()
 {
-  debug_control_borders       = true;
-  window_border_color         = sf::Color( 48,  24, 224, 255);
-  window_focused_border_color = sf::Color( 96,  48, 255, 255);
-  window_bg_color             = sf::Color(255, 255, 255, 255);
-  window_focused_bg_color     = sf::Color(255, 255, 255, 255);
-  window_border_width         = 5;
+  debug_control_borders       = false;
+  pane_border_color           = sf::Color( 48,  24, 224, 255);
+  pane_focused_border_color   = sf::Color( 96,  48, 255, 255);
+  pane_bg_color               = sf::Color(255, 255, 255, 255);
+  pane_focused_bg_color       = sf::Color(255, 255, 255, 255);
+  pane_border_width           = 5;
+  menu_border_color           = sf::Color(  0,   0,   0, 255);
+  menu_focused_border_color   = sf::Color(  0,   0,   0, 255);
+  menu_bg_color               = sf::Color(255, 255, 255, 255);
+  menu_focused_bg_color       = sf::Color(255, 255, 255, 255);
+  menu_border_width           = 2;
   button_focused_border_color = sf::Color(  0,   0,   0, 255);
   button_border_bl_color      = sf::Color( 64,  64,  64, 255);
   button_border_tr_color      = sf::Color(196, 196, 196, 255);

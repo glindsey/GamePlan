@@ -32,7 +32,7 @@ class Slider :
 
     /// Get both the minimum and maximum values of the slider.
     /// @return A pair in the form (min_value, max_value).
-    std:pair<long int> get_extents(void) const;
+    std::pair<long int> get_extents(void) const;
 
     void set_min_value(long int min_value);
     long int get_min_value(void) const;
