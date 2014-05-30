@@ -41,6 +41,12 @@ class Control :
     std::shared_ptr<IControlApparator> get_apparator();
     void set_apparator(std::shared_ptr<IControlApparator> apparator);
 
+    bool do_arrow_keys_control_focus() const;
+    void set_arrow_keys_control_focus(bool enable);
+
+    bool does_tab_control_focus() const;
+    void set_tab_controls_focus(bool enable);
+
     bool is_mouse_inside() const;
 
     void clear_children();

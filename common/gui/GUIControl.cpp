@@ -26,6 +26,9 @@ struct Control::Impl
   /// Control alignment (to parent).
   Align alignment;
 
+  /// Current visibility state of this control and its children.
+  VisibilityState appear_state;
+
   /// Visibility amount, from 0 to 1.
   float appear_amount;
 
@@ -36,20 +39,27 @@ struct Control::Impl
   /// appear/disappear.
   std::shared_ptr<IControlApparator> apparator;
 
-  /// Current visibility state of this control and its children.
-  VisibilityState appear_state;
-
-  /// Boolean indicating whether this area has the focus.
+  /// Boolean indicating whether this control has the focus.
   bool focus;
 
-  /// Boolean indicating whether the cursor is within this area.
+  /// Boolean indicating whether the mouse cursor is within this area.
   bool captured;
+
+  /// If true, keyboard focus is changed via arrow keys.
+  bool arrow_keys_control_focus;
+
+  /// If true, keyboard focus is changed via tab.
+  bool tab_controls_focus;
 
   /// Control texture.
   std::unique_ptr<sf::RenderTexture> control_texture;
 
   /// Collection of child controls.
   std::vector<std::unique_ptr<Control>> children;
+
+  /// Iterator pointing to child control with focus.
+  std::vector<std::unique_ptr<Control>>::iterator focused_child;
+
 };
 
 Control::Control(std::string name,
@@ -65,6 +75,7 @@ Control::Control(std::string name,
   impl->appear_amount = 1.0f;
   impl->appear_speed = 0.05f;
   impl->control_texture->setSmooth(true); // good idea?
+  impl->focused_child = std::begin(impl->children);
 }
 
 Control::~Control()
@@ -161,6 +172,26 @@ void Control::set_apparator(std::shared_ptr<IControlApparator> apparator)
   impl->apparator = apparator;
 }
 
+bool Control::do_arrow_keys_control_focus() const
+{
+  return impl->arrow_keys_control_focus;
+}
+
+void Control::set_arrow_keys_control_focus(bool enable)
+{
+  impl->arrow_keys_control_focus = enable;
+}
+
+bool Control::does_tab_control_focus() const
+{
+  return impl->tab_controls_focus;
+}
+
+void Control::set_tab_controls_focus(bool enable)
+{
+  impl->tab_controls_focus = enable;
+}
+
 bool Control::is_mouse_inside() const
 {
   return impl->captured;
@@ -185,6 +216,10 @@ bool Control::add_child(std::unique_ptr<Control> new_child)
 
   new_child->set_parent(this);
   impl->children.push_back(std::move(new_child));
+
+  // Set focus to the first control.
+  impl->focused_child = std::begin(impl->children);
+
   return true;
 }
 
@@ -199,6 +234,8 @@ void Control::must_add_child(std::unique_ptr<Control> new_child)
 
 std::unique_ptr<Control> Control::remove_child(std::string const& name)
 {
+  /// @todo Fix focused control iterator if it was on the current child.
+
   for (auto iter = std::begin(impl->children);
        iter != std::end(impl->children);
        ++iter)
@@ -340,6 +377,66 @@ EventResult Control::handle_event(sf::Event& event)
 
   switch (event.type)
   {
+
+  case sf::Event::KeyPressed:
+    if (do_arrow_keys_control_focus() &&
+        (impl->children.size() != 0))
+    {
+      switch (event.key.code)
+      {
+      case sf::Keyboard::Up:
+      case sf::Keyboard::Num8:
+
+      case sf::Keyboard::Left:
+      case sf::Keyboard::Num4:
+
+      case sf::Keyboard::Right:
+      case sf::Keyboard::Num6:
+
+      case sf::Keyboard::Down:
+      case sf::Keyboard::Num2:
+        TRACE("Arrow keys not implemented yet!");
+        break;
+
+      default:
+        break;
+      }
+    }
+
+    /// @todo Deal with non-focusable controls.
+    if (does_tab_control_focus() &&
+        (impl->children.size() != 0))
+    {
+      if (event.key.code == sf::Keyboard::Tab)
+      {
+        if (event.key.shift == false)
+        {
+          (*(impl->focused_child))->set_focus(false);
+          ++(impl->focused_child);
+          if (impl->focused_child == std::end(impl->children))
+          {
+            impl->focused_child = std::begin(impl->children);
+          }
+          (*(impl->focused_child))->set_focus(true);
+          TRACE(boost::format("New focus is \"%1%\"") % (*(impl->focused_child))->get_name());
+          result = EventResult::Handled;
+        }
+        else
+        {
+          (*(impl->focused_child))->set_focus(false);
+          if (impl->focused_child == std::begin(impl->children))
+          {
+            impl->focused_child = std::end(impl->children);
+          }
+          --(impl->focused_child);
+          (*(impl->focused_child))->set_focus(true);
+          TRACE(boost::format("New focus is \"%1%\"") % (*(impl->focused_child))->get_name());
+          result = EventResult::Handled;
+        }
+      }
+    }
+    break;
+
     // TODO - Do generic control event processing here.
   case sf::Event::MouseMoved:
     {

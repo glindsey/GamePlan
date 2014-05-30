@@ -1,5 +1,6 @@
 #include "AppStateMainMenu.h"
 
+#include <boost/format.hpp>
 #include <functional>
 
 #include "App.h"
@@ -41,15 +42,24 @@ AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   control_test_pane->set_title("Test GUI Pane");
   control_test_pane->set_apparator(apparatorZoom);
 
-  std::unique_ptr<GUI::Button> test_button;
-  test_button.reset(new GUI::Button("test_button", {150, 40},
+  std::unique_ptr<GUI::Button> test_button1;
+  test_button1.reset(new GUI::Button("test_button_1", {150, 40},
                                     app_->get_default_font()));
-  test_button->set_position({-25, 50});
-  test_button->set_alignment({GUI::HorizAlign::Right,
+  test_button1->set_position({-25, 50});
+  test_button1->set_alignment({GUI::HorizAlign::Right,
                               GUI::VertAlign::Top});
-  test_button->set_text("Test Button");
-  auto click_callback = std::bind(&AppStateMainMenu::do_button_clicked, this);
-  test_button->set_callback_clicked(click_callback);
+  test_button1->set_text("Test Button 1");
+  auto click_callback = std::bind(&AppStateMainMenu::do_button_clicked, this, _1);
+  test_button1->set_callback_clicked(click_callback);
+
+  std::unique_ptr<GUI::Button> test_button2;
+  test_button2.reset(new GUI::Button("test_button_2", {150, 40},
+                                    app_->get_default_font()));
+  test_button2->set_position({-25, 100});
+  test_button2->set_alignment({GUI::HorizAlign::Right,
+                              GUI::VertAlign::Top});
+  test_button2->set_text("Test Button 2");
+  test_button2->set_callback_clicked(click_callback);
 
   std::unique_ptr<GUI::Label> test_label;
   test_label.reset(new GUI::Label("test_label", {300, 140},
@@ -74,11 +84,13 @@ AppStateMainMenu::AppStateMainMenu(StateMachine* state_machine)
   test_menu->set_visible(true);
 
 
-  control_test_pane->add_child(std::move(test_button));
+  control_test_pane->add_child(std::move(test_button1));
+  control_test_pane->add_child(std::move(test_button2));
   control_test_pane->add_child(std::move(test_label));
   control_test_pane->add_child(std::move(test_menu));
 
   control_test_pane->set_visible(true);
+  control_test_pane->set_focus(true);
 
   impl->gui_root->add_child(std::move(control_test_pane));
 
@@ -110,9 +122,9 @@ EventResult AppStateMainMenu::handle_event(sf::Event& event)
     {
     case sf::Keyboard::Key::Space:
       // Switch to game state.
-      this->change_to("AppStateGameMode");
+      //this->change_to("AppStateGameMode");
 
-      result = EventResult::Handled;
+      //result = EventResult::Handled;
       break;
 
     default:
@@ -158,7 +170,7 @@ bool AppStateMainMenu::terminate()
   return true;
 }
 
-void AppStateMainMenu::do_button_clicked()
+void AppStateMainMenu::do_button_clicked(GUI::Control& control)
 {
-  TRACE("Button has been clicked");
+  TRACE(boost::format("%1% has been clicked") % control.get_name());
 }

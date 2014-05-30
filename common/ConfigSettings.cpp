@@ -16,9 +16,9 @@ ConfigSettings::ConfigSettings()
   menu_focused_bg_color       = sf::Color(255, 255, 255, 255);
   menu_border_width           = 2;
   button_focused_border_color = sf::Color(  0,   0,   0, 255);
-  button_border_bl_color      = sf::Color( 64,  64,  64, 255);
-  button_border_tr_color      = sf::Color(196, 196, 196, 255);
-  button_bg_color             = sf::Color(128, 128, 128, 255);
+  button_border_bl_color      = sf::Color(160, 160, 160, 255);
+  button_border_tr_color      = sf::Color(224, 224, 224, 255);
+  button_bg_color             = sf::Color(192, 192, 192, 255);
   button_border_width         = 3;
   font_name_default           = "Dustismo_Roman";
   font_name_bold              = "Dustismo_Roman_Bold";

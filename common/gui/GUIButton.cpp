@@ -15,10 +15,10 @@ struct Button::Impl
   sf::String text_string;
 
   /// Callback function for when the button is clicked.
-  std::function<void()> callback_clicked;
+  std::function<void(Control&)> callback_clicked;
 
   /// Callback function for when the button is pressed or released.
-  std::function<void(bool)> callback_pressed;
+  std::function<void(Control&, bool)> callback_pressed;
 
   /// Background shape.
   sf::RectangleShape bg_shape;
@@ -51,12 +51,12 @@ sf::String Button::get_text()
   return impl->text_string;
 }
 
-void Button::set_callback_clicked(std::function<void()> callback)
+void Button::set_callback_clicked(std::function<void(Control&)> callback)
 {
   impl->callback_clicked = callback;
 }
 
-void Button::set_callback_pressed(std::function<void(bool)> callback)
+void Button::set_callback_pressed(std::function<void(Control&, bool)> callback)
 {
   impl->callback_pressed = callback;
 }
@@ -74,7 +74,15 @@ EventResult Button::_handle_event(sf::Event& event)
 
   switch (event.type)
   {
-    // TODO - Do generic control event processing here.
+  case sf::Event::KeyPressed:
+    if (get_focus() == true)
+    {
+      if ((event.key.code == sf::Keyboard::Space) ||
+          (event.key.code == sf::Keyboard::Return))
+      {
+        impl->callback_clicked(*this);
+      }
+    }
   case sf::Event::MouseMoved:
     // If the mouse is moved off of the control, it is no longer pressed.
     if (!is_mouse_inside())
@@ -84,7 +92,7 @@ EventResult Button::_handle_event(sf::Event& event)
         impl->pressed = false;
         if (impl->callback_pressed)
         {
-          impl->callback_pressed(false);
+          impl->callback_pressed(*this, false);
         }
       }
     }
@@ -99,7 +107,7 @@ EventResult Button::_handle_event(sf::Event& event)
         impl->pressed = true;
         if (impl->callback_pressed)
         {
-          impl->callback_pressed(true);
+          impl->callback_pressed(*this, true);
         }
       }
     }
@@ -113,11 +121,11 @@ EventResult Button::_handle_event(sf::Event& event)
         impl->pressed = false;
         if (impl->callback_pressed)
         {
-          impl->callback_pressed(false);
+          impl->callback_pressed(*this, false);
         }
         if (impl->callback_clicked)
         {
-          impl->callback_clicked();
+          impl->callback_clicked(*this);
         }
       }
     }
@@ -187,6 +195,17 @@ void Button::_render_background(sf::RenderTarget& target, int frame)
   shape.setFillColor(impl->pressed ? Settings.button_border_bl_color
                                    : Settings.button_border_tr_color);
   target.draw(shape);
+
+  // If the button has the focus, draw a border.
+  if (get_focus() == true)
+  {
+    shape.setPosition({1, 1});
+    shape.setSize({dimensions.x - 2, dimensions.y - 2});
+    shape.setFillColor(sf::Color::Transparent);
+    shape.setOutlineColor(sf::Color::Black);
+    shape.setOutlineThickness(1);
+    target.draw(shape);
+  }
 }
 
 void Button::_render_text(sf::RenderTarget& target, int frame)

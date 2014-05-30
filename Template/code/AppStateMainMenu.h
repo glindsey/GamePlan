@@ -5,6 +5,11 @@
 
 #include "State.h"
 
+/// Forward declarations
+namespace GUI
+{
+  class Control;
+}
 
 class AppStateMainMenu : public State
 {
@@ -19,7 +24,7 @@ class AppStateMainMenu : public State
     virtual bool initialize() override;
     virtual bool terminate() override;
 
-    void do_button_clicked();
+    void do_button_clicked(GUI::Control& control);
 
   protected:
   private:

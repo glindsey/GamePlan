@@ -33,6 +33,10 @@ Pane::Pane(std::string name,
   impl->title_font = title_font;
   impl->title_alignment = HorizAlign::Center;
 
+  /// By default, tab and arrow keys control focus within a pane.
+  set_arrow_keys_control_focus(true);
+  set_tab_controls_focus(true);
+
   /// Pane instances start out hidden until manually shown.
   set_instant_visibility(false);
 }

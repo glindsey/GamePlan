@@ -6160,7 +6160,7 @@
 1397609525 c:\gdrive\hobby\gamedev\projects\gameplan\common\renderable.h
 	<SFML/Graphics.hpp>
 
-1401120875 c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.h
+1401414685 c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.h
 	<memory>
 	"State.h"
 
@@ -7744,7 +7744,7 @@
 	<cstddef>
 	<boost/config.hpp>
 
-1401153295 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\configsettings.cpp
+1401414324 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\configsettings.cpp
 	"ConfigSettings.h"
 
 1396720363 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\errormacros.cpp
@@ -7752,26 +7752,26 @@
 	<boost/format.hpp>
 	<cstdlib>
 
-1401122144 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.cpp
+1401414638 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.cpp
 	"gui/GUIButton.h"
 	"App.h"
 	"ConfigSettings.h"
 	"GUIFont.h"
 
-1399945597 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.h
+1401414497 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guibutton.h
 	<SFML/Graphics.hpp>
 	<functional>
 	<memory>
 	<vector>
 	"GUIControl.h"
 
-1400034040 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
+1401411196 c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.h
 	<SFML/Graphics.hpp>
 	<memory>
 	"IEventHandler.h"
 	"IRenderable.h"
 
-1400032246 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
+1401413817 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guicontrol.cpp
 	"GUIControl.h"
 	"ErrorMacros.h"
 	"GUIEnums.h"
@@ -7798,7 +7798,7 @@
 	"GUIControl.h"
 	"GUIEnums.h"
 
-1401120540 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.cpp
+1401411395 source:c:\gdrive\hobby\gamedev\projects\gameplan\common\gui\guipane.cpp
 	"gui/GUIPane.h"
 	"App.h"
 	"ConfigSettings.h"
@@ -9066,8 +9066,9 @@
 	"AppStateGameMode.h"
 	"App.h"
 
-1401153791 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
+1401414764 source:c:\gdrive\hobby\gamedev\projects\gameplan\template\code\appstatemainmenu.cpp
 	"AppStateMainMenu.h"
+	<boost/format.hpp>
 	<functional>
 	"App.h"
 	"ErrorMacros.h"
